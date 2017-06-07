@@ -1,0 +1,9 @@
+Fleury's Algorithm (Eulerian Circuit) - Description
+
+Using given starting location by the user, the algorithm to proceed along the list of connected edges,
+with the priority of the chosen edge to be lowest for a bridge. It will then change the starting variables
+to reflect the new starting vertex and the edge is added to the current trail and continue in the loop, with 
+the bridge priority remaining the lowest. At the end of the transition, the original edge is "deleted" from 
+the graph, which is reflected by the remaining number of edges. This is continued until the starting point 
+has been reached.
+
