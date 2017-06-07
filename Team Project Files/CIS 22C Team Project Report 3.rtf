@@ -1,10 +1,10 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf810
-{\fonttbl\f0\fnil\fcharset0 Verdana;\f1\ftech\fcharset77 Symbol;\f2\fnil\fcharset0 Consolas;
-}
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\fnil\fcharset0 Verdana;\f1\ftech\fcharset77 Symbol;\f2\fswiss\fcharset0 Helvetica;
+\f3\fnil\fcharset0 Menlo-Regular;}
 {\colortbl;\red255\green255\blue255;\red191\green191\blue191;\red0\green145\blue206;\red0\green0\blue0;
-\red0\green145\blue206;}
-{\*\expandedcolortbl;;\csgray\c79525;\csgenericrgb\c0\c56863\c80784;\csgenericrgb\c0\c0\c0;
-\csgenericrgb\c0\c56863\c80784;}
+\red27\green31\blue34;\red21\green23\blue26;}
+{\*\expandedcolortbl;\csgray\c100000;\csgray\c79525;\csgenericrgb\c0\c56863\c80784;\csgenericrgb\c0\c0\c0;
+\cssrgb\c14118\c16078\c18039;\cssrgb\c10588\c12157\c13725\c29804;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
 {\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
@@ -154,8 +154,9 @@ Please list the tasks (with updated ones you may have changed from Report #2), a
 \pard\pardeftab720\ri0\partightenfactor0
 \cf0 \
 \
+\pard\pardeftab720\ri0\partightenfactor0
 
-\fs24 \ul Data Example\ulnone :
+\fs24 \cf0 \ul \ulc0 Data Example\ulnone :
 \fs22 \
 - 
 \b Vertex
@@ -177,15 +178,16 @@ Each line will contain two pairs of vertices like so:\
 
 \fs24 \
 \ul Data Structure Example\ulnone :\
+\pard\pardeftab720\ri0\partightenfactor0
 
-\fs22 - We will include a new 
+\fs22 \cf0 - We will include a new 
 \f2 \cf3 Set
 \f0 \cf0  of street names to represent each edge in the 
 \f2 \cf3 VertexSet
 \f0 \cf0  of 
 \f2 \cf3 Pair
 \f0 \cf0 s. For example, Edge #1 
-\f2 \cf5 x1,y2 x2,y2 
+\f2 \cf3 x1,y2 x2,y2 
 \f0 \cf0 could represent 
 \f2 \cf3 \'93De Anza Boulevard\'94
 \f0 \cf0 .\
@@ -206,4 +208,72 @@ Each line will contain two pairs of vertices like so:\
 \f2 \cf3 x
 \f0 \cf0  where 
 \f2 \cf3 x
-\f0 \cf0  represents visited street)}
+\f0 \cf0  represents visited street)\
+\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clmgf \clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clmrg \clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f3\fs24 \cf5 \expnd0\expndtw0\kerning0
+Fleury's Algorithm (Eulerian Circuit) - Description\cell 
+\pard\intbl\itap1\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 \
+\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth1000\clftsWidth3 \clminw1000 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 Using given starting location by the user, the algorithm to proceed along the list of connected edges,\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth1000\clftsWidth3 \clminw1000 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 with the priority of the chosen edge to be lowest for a bridge. It will then change the starting variables\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth1000\clftsWidth3 \clminw1000 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 to reflect the new starting vertex and the edge is added to the current trail and continue in the loop, with \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth1000\clftsWidth3 \clminw1000 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 the bridge priority remaining the lowest. At the end of the transition, the original edge is "deleted" from \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth1000\clftsWidth3 \clminw1000 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 the graph, which is reflected by the remaining number of edges. This is continued until the starting point \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth1000\clftsWidth3 \clminw1000 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth18560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl200 \clpadr200 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf5 has been reached.\cell \lastrow\row
+}
