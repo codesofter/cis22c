@@ -1,27 +1,47 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
+
 public class GroupProject
 {
-	public static Scanner scanner = new Scanner( System.in );
-	public enum SelectionCode { MAIN_MENU, SELECT_NEIGHBORHOOD, 
-		UPDATE_NEIGHBORHOOD, NEIGHBORHOOD_FUNCTIONS, QUIT }
+	public static Scanner scanner = new Scanner(System.in);
+
+	public enum MenuCode
+	{
+		MAIN_MENU, SELECT_NEIGHBORHOOD, UPDATE_NEIGHBORHOOD, NEIGHBORHOOD_FUNCTIONS, QUIT
+	}
+
 	public static final String tab = "     ";
+	private static NeighborhoodGraph<LocationPoint> graph = null;
 	
-	// ------- main --------------
 	public static void main(String[] args)
 	{
-		SelectionCode mainSelection = SelectionCode.MAIN_MENU;
+		
+		//NeighborhoodGraph<LocationPoint> graph = null;
+		
+		boolean testing = false;		
+		if (testing)
+		{
+			System.out.println("Testing............");
+			tester.testMapDataInput();
+			//tester.testBreadthFirstTraversal();			
+			return;
+		}
+		
+		MenuCode mainSelection = MenuCode.MAIN_MENU;
 		do
 		{
 			switch (mainSelection)
-			{				
+			{
 				case MAIN_MENU:
 					mainSelection = MainMenu();
 					break;
-				case SELECT_NEIGHBORHOOD:
+				case SELECT_NEIGHBORHOOD:  
 					mainSelection = selectNeighborhood();
 					break;
 				case NEIGHBORHOOD_FUNCTIONS:
-					mainSelection = neighborhoodFunctions();
+					mainSelection = neighborhoodFunctions(graph);
 					break;
 				case UPDATE_NEIGHBORHOOD:
 					mainSelection = updateNeighborhoodMap();
@@ -29,13 +49,13 @@ public class GroupProject
 				default:
 					break;
 			}
-		} while (mainSelection != SelectionCode.QUIT);
-		
+		} while (mainSelection != MenuCode.QUIT);
+
 		return;
 	}
-	
-	public static SelectionCode MainMenu()
-	{	
+
+	public static MenuCode MainMenu()
+	{
 		int userInput;
 		while (true)
 		{
@@ -43,21 +63,21 @@ public class GroupProject
 			System.out.println("---------");
 			System.out.println(tab + "1.  Select a Neighborhood");
 			System.out.println(tab + "2.  Quit");
-			
-			System.out.print("\nPlease enter your selection: ");			
-			userInput = scanner.nextInt();			
-			
+
+			System.out.print("\nPlease enter your selection: ");
+			userInput = scanner.nextInt();
+
 			if (userInput == 1)
-				return SelectionCode.SELECT_NEIGHBORHOOD;
+				return MenuCode.SELECT_NEIGHBORHOOD;
 			else if (userInput == 2)
-				return SelectionCode.QUIT;			
+				return MenuCode.QUIT;
 			else
-				System.out.println(tab + "Your selection is invalid.\n");		
+				System.out.println(tab + "Your selection is invalid.\n");
 		}
 	}
-	
-	public static SelectionCode selectNeighborhood()
-	{	
+
+	public static MenuCode selectNeighborhood()
+	{
 		int userInput;
 		while (true)
 		{
@@ -65,24 +85,49 @@ public class GroupProject
 			System.out.println("------------------------");
 			System.out.println(tab + "1.  Name of Neighborhood 1");
 			System.out.println(tab + "2.  Name of Neighborhood 2");
-			System.out.println(tab + "3.  Name of Neighborhood 3");
-			System.out.println(tab + "4.  Name of Neighborhood 4");
-			System.out.println(tab + "5.  Main Menu");			
-			
-			System.out.print("\nPlease enter your selection: ");			
-			userInput = scanner.nextInt();			
-			
-			if ((userInput >= 1) && (userInput <= 4)) 
-				return SelectionCode.NEIGHBORHOOD_FUNCTIONS;
+			System.out.println(tab + "3.  Name of Neighborhood 3 (Bad Data)");
+			System.out.println(tab + "4.  Name of Neighborhood 4 (File not existed)");
+			System.out.println(tab + "5.  Main Menu");
+
+			System.out.print("\nPlease enter your selection: ");
+			userInput = scanner.nextInt();
+
+			if ((userInput >= 1) && (userInput <= 2))
+			{
+				graph = GraphIO.getNeighborhoodMap("NeighborhoodMap1.txt");
+				if (graph == null)
+					return MenuCode.SELECT_NEIGHBORHOOD;
+				else
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+			} 
+			else if (userInput == 3)
+			{
+				graph = GraphIO.getNeighborhoodMap("BadMapFile.txt");
+				if (graph == null)
+					return MenuCode.SELECT_NEIGHBORHOOD;
+				else
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+			} 
+			else if (userInput == 4)
+			{
+				graph = GraphIO.getNeighborhoodMap("InvalidFileName.txt");
+				if (graph == null)
+					return MenuCode.SELECT_NEIGHBORHOOD;
+				else
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+			} 
 			else if (userInput == 5)
-				return SelectionCode.MAIN_MENU;			
+				return MenuCode.MAIN_MENU;
 			else
-				System.out.println(tab + "Your selection is invalid.\n");		
+				System.out.println(tab + "Your selection is invalid.\n");
 		}
 	}
-	
-	public static SelectionCode neighborhoodFunctions()
-	{	
+
+	public static MenuCode neighborhoodFunctions(NeighborhoodGraph<LocationPoint> inputGraph)
+	{
+		if (graph == null) 
+			throw new NullPointerException("NeighborhoodFunctions - Input parameter can not be null.");
+		
 		int userInput;
 		while (true)
 		{
@@ -93,32 +138,51 @@ public class GroupProject
 			System.out.println(tab + "3.  Show Breadth First Traversal");
 			System.out.println(tab + "4.  Show Depth First Traversal");
 			System.out.println(tab + "5.  Show Adjacent List Table");
-			System.out.println(tab + "6.  Return to previous Menu");			
+			System.out.println(tab + "6.  Return to previous Menu");
 			System.out.println(tab + "7.  Main Menu");
-			
-			System.out.print("\nPlease enter your selection: ");			
-			userInput = scanner.nextInt();			
-			
-			if (userInput == 1) 
-				return SelectionCode.UPDATE_NEIGHBORHOOD;
-			else if ((userInput >= 2) && (userInput <= 5)) 
+
+			System.out.print("\nPlease enter your selection: ");
+			userInput = scanner.nextInt();
+
+			if (userInput == 1)
+				return MenuCode.UPDATE_NEIGHBORHOOD;
+			else if (userInput == 2)
+			{
 				System.out.println(tab + "Processing your selection....\n");
+				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+			}	
+			else if (userInput == 3)
+			{
+				showBreadthFirstTraversal(inputGraph);
+				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+			}	
+			else if (userInput == 4)
+			{
+				System.out.println(tab + "Processing your selection....\n");
+				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+			}	
+			else if (userInput == 5)
+			{
+				showAdjacencyList(inputGraph);
+				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+			}				
 			else if (userInput == 6)
-				return SelectionCode.SELECT_NEIGHBORHOOD;
+				return MenuCode.SELECT_NEIGHBORHOOD;
 			else if (userInput == 7)
-				return SelectionCode.MAIN_MENU;		
+				return MenuCode.MAIN_MENU;
 			else
-				System.out.println(tab + "Your selection is invalid.\n");		
+				System.out.println(tab + "Your selection is invalid.\n");
 		}
-	}
-	
-	/*
+	}	
+
+	/*	 
 	 * Description (or) documentation of methods.
 	 * 
 	 * Coder: Bao Chau
-	 */
-	public static SelectionCode updateNeighborhoodMap()
-	{	
+	 * 
+	 */	 
+	public static MenuCode updateNeighborhoodMap()
+	{
 		int userInput;
 		while (true)
 		{
@@ -129,42 +193,38 @@ public class GroupProject
 			System.out.println(tab + "3.  Report Closed Street");
 			System.out.println(tab + "4.  Undo Last Update");
 			System.out.println(tab + "5.  Save Neighborhood Map");
-			System.out.println(tab + "6.  Return to previous Menu");			
+			System.out.println(tab + "6.  Return to previous Menu");
 			System.out.println(tab + "7.  Main Menu");
-			
-			System.out.print("\nPlease enter your selection: ");			
-			userInput = scanner.nextInt();						
 
-			if ((userInput >= 1) && (userInput <= 5)) 
+			System.out.print("\nPlease enter your selection: ");
+			userInput = scanner.nextInt();
+
+			if ((userInput >= 1) && (userInput <= 5))
 				System.out.println(tab + "Processing your selection....\n");
 			else if (userInput == 6)
-				return SelectionCode.SELECT_NEIGHBORHOOD;
+				return MenuCode.SELECT_NEIGHBORHOOD;
 			else if (userInput == 7)
-				return SelectionCode.MAIN_MENU;		
+				return MenuCode.MAIN_MENU;
 			else
-				System.out.println(tab + "Your selection is invalid.\n");		
+				System.out.println(tab + "Your selection is invalid.\n");
 		}
 	}
-	
-	
-	/*
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: So Choi, Bao Chau
-	 */
-	boolean getNeighborhoodList(String filename)
-	{
-	}
 
-	
-	/*
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: So Choi, Bao Chau
-	 */
-	boolean getNeighborhoodMap(String filename)
+	public static void showAdjacencyList(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
+		System.out.println();	
+		System.out.println(tab + "Adjacency List Output:");
+		graph.showAdjTable();
+		System.out.println();			
 	}
-
+	
+	public static void showBreadthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
+	{
+		System.out.println();	
+		System.out.println(tab + "Breadth First Traversal Output:");
+		System.out.print(tab);
+		LocationPoint startElement = graph.findLocationByName("A");
+		graph.breadthFirstTraversal(startElement, new LocationPointVisitor());
+		System.out.println();			
+	}	
 }
-

@@ -9,8 +9,7 @@ public class LocationPointVisitor implements Visitor<LocationPoint>
 	@Override
 	public void visit(LocationPoint obj)
 	{
-		// TODO Auto-generated method stub
-		
+		System.out.print(obj + " ");		
 	}
 
 }

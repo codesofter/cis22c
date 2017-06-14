@@ -6,7 +6,7 @@ import java.text.*;
 //------------------------------------------------------
 public class GraphTester
 {
-	   // -------  main --------------
+	   /*// -------  main --------------
 	   public static void main(String[] args)
 	   {
 	      // build graph
@@ -22,6 +22,6 @@ public class GraphTester
 
 	      myGraph1.showAdjTable();
 
-	   }
+	   }*/
 
 }

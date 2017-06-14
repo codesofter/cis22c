@@ -1,15 +1,51 @@
+import java.io.PrintWriter;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class NeighborhoodGraph<E> extends Graph<E>
 {
+	private String neighborhoodName = "";
+	
+
+	
+	public E findLocationByName(String name)
+	{
+		E data;
+		Vertex<E> tempVertex; 
+		Iterator<Entry<E, Vertex<E>>> iterator;
+		
+		if ((name != null) && (name.length() > 0))
+		{
+			iterator = vertexSet.entrySet().iterator();
+			while (iterator.hasNext())
+			{
+				tempVertex = iterator.next().getValue();
+				data = tempVertex.getData();
+				if (name.compareToIgnoreCase(data.toString()) == 0)
+					return data;
+			}	
+		}
+
+		return null;
+	}
+	
+	public String getNeighborhoodName()
+	{
+		return neighborhoodName;
+	}
 	
 	/*
 	 * Description (or) documentation of methods.
 	 * 
 	 * Coder: So Choi, Bao Chau
 	 */	
-	boolean setNeighborhoodName (String name)
+	void setNeighborhoodName (String name)
 	{
-		
+		neighborhoodName = name;
 	}
 	
 	
@@ -20,7 +56,7 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 */
 	boolean hasEulerCircuit ()
 	{
-		
+		return false;
 	}
 	
 	
@@ -31,7 +67,7 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 */
 	LinkedQueue<E> getEulerCircuit ()
 	{
-		
+		return null;
 	}
 	
 	
@@ -53,7 +89,7 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 */
 	boolean addStreet (boolean twoWay, E source, E destination)
 	{
-		
+		return false;
 	}
 	
 	
@@ -64,7 +100,7 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 */
 	boolean removeStreet (boolean twoWay, E source, E destination)
 	{
-		
+		return false;
 	}
 	
 	
@@ -83,7 +119,7 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 * 
 	 * Coder: So Choi, Bao Chau
 	 */
-	void saveToFile (PrintWriter out)
+	public void saveToFile (PrintWriter out)
 	{
 		
 	}

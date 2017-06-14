@@ -163,10 +163,11 @@ public class Graph<E>
    {
       Iterator<Entry<E, Vertex<E>>> iter;
 
-      System.out.println( "------------------------ ");
+      System.out.println( GroupProject.tab + "------------------------ ");
       iter = vertexSet.entrySet().iterator();
       while( iter.hasNext() )
       {
+    	  System.out.print(GroupProject.tab);
          (iter.next().getValue()).showAdjList();
       }
       System.out.println();

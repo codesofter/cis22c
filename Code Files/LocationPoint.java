@@ -8,10 +8,10 @@ public class LocationPoint
 	public LocationPoint(String name, double latitude, 
 					double longitude, String description)
 	{
-		this.name = name;
+		this.name = name.trim();
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.description = description;
+		this.description = description.trim();
 	}
 
 	public String getName() { return name; }
@@ -28,7 +28,13 @@ public class LocationPoint
 	 */
 	public boolean equals(LocationPoint obj)
 	{
-		
+		if (obj == null) return false;
+		if (!name.equalsIgnoreCase(obj.name))
+			return false;
+		else if (latitude != obj.latitude)
+			return false;
+		else
+			return (longitude == obj.longitude);
 	}
 	
 	
@@ -39,7 +45,33 @@ public class LocationPoint
 	 */
 	public int hashCode()
 	{
+		int hashCode = 0;
 		
+		String key = name + latitude + longitude;
+		
+		for(int k = 0; k < key.length(); k++ )
+			hashCode = 37 * hashCode + key.charAt(k);
+		
+		return hashCode;
 	}
+	
+	/*
+	 * 
+	 * public class IpAddressStringHasher implements Hasher<IpAddress>
+{
+	@Override
+	public int hash(IpAddress ipAddress)
+	{ 
+		int hashCode = 0;
+		String key = ipAddress.getDottedDecimal();
+		
+		for(int k = 0; k < key.length(); k++ )
+			hashCode = 37 * hashCode + key.charAt(k);
+				
+		return hashCode;
+	}
+
+}*/
+
 }
 
