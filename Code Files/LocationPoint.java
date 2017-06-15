@@ -54,24 +54,5 @@ public class LocationPoint
 		
 		return hashCode;
 	}
-	
-	/*
-	 * 
-	 * public class IpAddressStringHasher implements Hasher<IpAddress>
-{
-	@Override
-	public int hash(IpAddress ipAddress)
-	{ 
-		int hashCode = 0;
-		String key = ipAddress.getDottedDecimal();
-		
-		for(int k = 0; k < key.length(); k++ )
-			hashCode = 37 * hashCode + key.charAt(k);
-				
-		return hashCode;
-	}
-
-}*/
-
 }
 

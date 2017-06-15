@@ -1,6 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class GroupProject
@@ -16,15 +13,12 @@ public class GroupProject
 	private static NeighborhoodGraph<LocationPoint> graph = null;
 	
 	public static void main(String[] args)
-	{
-		
-		//NeighborhoodGraph<LocationPoint> graph = null;
-		
+	{	
 		boolean testing = false;		
 		if (testing)
 		{
 			System.out.println("Testing............");
-			tester.testMapDataInput();
+			tester.testDepthFirstTraversal();
 			//tester.testBreadthFirstTraversal();			
 			return;
 		}
@@ -44,7 +38,7 @@ public class GroupProject
 					mainSelection = neighborhoodFunctions(graph);
 					break;
 				case UPDATE_NEIGHBORHOOD:
-					mainSelection = updateNeighborhoodMap();
+					mainSelection = updateNeighborhoodMap(graph);
 					break;
 				default:
 					break;
@@ -158,7 +152,7 @@ public class GroupProject
 			}	
 			else if (userInput == 4)
 			{
-				System.out.println(tab + "Processing your selection....\n");
+				showDepthFirstTraversal(inputGraph);
 				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
 			}	
 			else if (userInput == 5)
@@ -181,7 +175,7 @@ public class GroupProject
 	 * Coder: Bao Chau
 	 * 
 	 */	 
-	public static MenuCode updateNeighborhoodMap()
+	public static MenuCode updateNeighborhoodMap(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		int userInput;
 		while (true)
@@ -199,7 +193,12 @@ public class GroupProject
 			System.out.print("\nPlease enter your selection: ");
 			userInput = scanner.nextInt();
 
-			if ((userInput >= 1) && (userInput <= 5))
+			if (userInput == 1)
+			{
+				changeNeighborhoodName(inputGraph);
+				return MenuCode.UPDATE_NEIGHBORHOOD;
+			}
+			else if ((userInput >= 2) && (userInput <= 5))
 				System.out.println(tab + "Processing your selection....\n");
 			else if (userInput == 6)
 				return MenuCode.SELECT_NEIGHBORHOOD;
@@ -220,11 +219,63 @@ public class GroupProject
 	
 	public static void showBreadthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
-		System.out.println();	
-		System.out.println(tab + "Breadth First Traversal Output:");
-		System.out.print(tab);
-		LocationPoint startElement = graph.findLocationByName("A");
-		graph.breadthFirstTraversal(startElement, new LocationPointVisitor());
-		System.out.println();			
+		String input;
+		LocationPoint startPoint;
+		
+		System.out.print("Please enter the start location: ");
+		if (scanner.hasNext()) scanner.nextLine();
+		input = scanner.nextLine().trim();
+		
+		startPoint = graph.findLocationByName(input);
+		if (startPoint != null)
+		{
+			System.out.println();	
+			System.out.println(tab + "Breadth First Traversal Output:");
+			System.out.print(tab);
+			LocationPoint startElement = graph.findLocationByName("A");
+			graph.breadthFirstTraversal(startElement, new LocationPointVisitor());
+			System.out.println();				
+		}
+		else
+			System.out.println(tab + "The location entry is invalid.");
 	}	
+
+	public static void showDepthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
+	{
+		String input;
+		LocationPoint startPoint;
+		
+		System.out.print("Please enter the start location: ");
+		if (scanner.hasNext()) scanner.nextLine();
+		input = scanner.nextLine().trim();
+		
+		startPoint = graph.findLocationByName(input);
+		if (startPoint != null)
+		{
+			System.out.println();	
+			System.out.println(tab + "Depth First Traversal Output:");
+			System.out.print(tab);
+			graph.depthFirstTraversal(startPoint, new LocationPointVisitor());
+			System.out.println();	
+		}
+		else
+			System.out.println(tab + "The location entry is invalid.");
+	}	
+	
+	public static void changeNeighborhoodName(NeighborhoodGraph<LocationPoint> inputGraph)
+	{
+		String newName;
+		System.out.println("Please enter the new name: ");
+		
+		if (scanner.hasNext()) scanner.nextLine();
+		newName = scanner.nextLine().trim();
+		
+		if (newName.length() == 0)
+			System.out.println("The input name is blank.");
+		else
+		{
+			inputGraph.setNeighborhoodName(newName);
+			System.out.println("New neighborhood name is: " + inputGraph.getNeighborhoodName());
+		}
+	}
 }

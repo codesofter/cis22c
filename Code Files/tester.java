@@ -13,4 +13,11 @@ public class tester
 		LocationPoint startElement = graph.findLocationByName("A");
 		graph.breadthFirstTraversal(startElement, new LocationPointVisitor());
 	}
+	
+	public static void testDepthFirstTraversal()
+	{
+		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("NeighborhoodMap1.txt");
+		LocationPoint startElement = graph.findLocationByName("A");
+		graph.depthFirstTraversal(startElement, new LocationPointVisitor());
+	}
 }

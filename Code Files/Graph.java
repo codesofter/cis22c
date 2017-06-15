@@ -163,7 +163,7 @@ public class Graph<E>
    {
       Iterator<Entry<E, Vertex<E>>> iter;
 
-      System.out.println( GroupProject.tab + "------------------------ ");
+      System.out.println(GroupProject.tab + "------------------------ ");
       iter = vertexSet.entrySet().iterator();
       while( iter.hasNext() )
       {
@@ -172,7 +172,6 @@ public class Graph<E>
       }
       System.out.println();
    }
-
 
    public void clear()
    {
@@ -246,9 +245,22 @@ public class Graph<E>
 	 */
    public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor)
    {
-        // YOU COMPLETE THIS (USE THE RECURSIVE ALGORITHM GIVEN FOR LESSON 11 EXERCISE)
+       // YOU COMPLETE THIS (USE THE RECURSIVE ALGORITHM GIVEN FOR LESSON 11 EXERCISE)
+	   E startData = startVertex.getData();
+	   startVertex.visit();
+	   visitor.visit(startData);
+	   Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter = startVertex.iterator();
+	   while (iter.hasNext()) 
+	   {
+		   Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter.next();
+		   Vertex<E> neighborVertex = nextEntry.getValue().first;
+		   
+		   if(!neighborVertex.isVisited()) 
+		   {
+		        depthFirstTraversalHelper(neighborVertex, visitor);
+		   }
+	   }
    }
-
 
 // WRITE THE INSTANCE METHOD HERE TO
    //         WRITE THE GRAPH's vertices and its
@@ -263,5 +275,4 @@ public class Graph<E>
    public void saveToFile(PrintWriter out)
    {
    }
-
 }
