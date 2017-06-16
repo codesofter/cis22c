@@ -1,5 +1,6 @@
 import java.io.PrintWriter;
 import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -81,36 +82,53 @@ public class NeighborhoodGraph<E> extends Graph<E>
 		
 	}
 	
-	LinkedStack undoStack = new LinkedStack<>();
+	LinkedStack<ArrayList> undoStack = new LinkedStack<ArrayList>();
+	/*
+		Helper class to add each instruction to an undo stack
+	*/
+	private void addInstructionToUndoStack(boolean isAdd, boolean isUndirected, E vertA, E vertB) {
+		ArrayList<Object> instruction = new ArrayList<Object>();
+		instruction.add(isAdd);
+		instruction.add(isUndirected);
+		instruction.add(vertA);
+		instruction.add(vertB);
+		System.out.println("instruction: " + instruction);
+		System.out.println(instruction.get(0) + ", " + instruction.get(1) + ", " + instruction.get(2) + ", " + instruction.get(3));
+		undoStack.push(instruction);
+	}
+
 	/*
 	 * Description (or) documentation of methods.
 	 * 
 	 * Coder: Bruce Decker, Vignesh Senthil
 	 */
-	boolean addStreet (boolean twoWay, E source, E destination)
+	boolean addStreet (boolean isUndirected, E source, E dest)
 	{
 		// Call addEdge from Graph class (includes addToVertexSet and addToAdjList)
 		addEdge(source, dest, COST);
-		if (twoWay) {
+		addInstructionToUndoStack(true, isUndirected, source, dest);
+		if (isUndirected) {
 			addEdge(dest, source, COST);
+			addInstructionToUndoStack(true, isUndirected, dest, source);
 		}
 		return false;
 	}
 	
-	
 	/*
 	 * Description (or) documentation of methods.
 	 * 
 	 * Coder: Bruce Decker, Vignesh Senthil
 	 */
-	boolean removeStreet (boolean twoWay, E source, E destination)
+	boolean removeStreet (boolean isUndirected, E source, E dest)
 	{
-		remove(source, destination);
+		remove(source, dest);
+		addInstructionToUndoStack(false, isUndirected, source, dest);
 		/*
 			NOTE: remove function in Graph.java has a snippet of code for undirected graph. We can just uncomment that section too.
 		*/
-		if (twoWay) {
-			remove(destination, source);
+		if (isUndirected) {
+			remove(dest, source);
+			addInstructionToUndoStack(false, isUndirected, dest, source);
 		}
 		return false;
 	}
@@ -123,7 +141,17 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 */
 	void undoLastUpdate()
 	{
-		
+		if (!undoStack.isEmpty()) {
+			ArrayList<Object> instruction = new ArrayList<Object>();
+			instruction = undoStack.pop();
+
+			// If instruction was true, it was an add instruction. must remove again.
+			// if (instruction.get(0)) {
+				// removeStreet(instruction.get(1), instruction.get(2), instruction.get(3));
+			// } else {
+				// addStreet(instruction.get(1), instruction.get(2), instruction.get(3));
+			// }
+		}
 	}
 	
 	/*
