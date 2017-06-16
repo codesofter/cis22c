@@ -9,7 +9,7 @@ import java.util.Set;
 public class NeighborhoodGraph<E> extends Graph<E>
 {
 	private String neighborhoodName = "";
-	
+	private final double COST = 0.0;
 
 	
 	public E findLocationByName(String name)
@@ -81,7 +81,7 @@ public class NeighborhoodGraph<E> extends Graph<E>
 		
 	}
 	
-	
+	LinkedStack undoStack = new LinkedStack<>();
 	/*
 	 * Description (or) documentation of methods.
 	 * 
@@ -89,6 +89,11 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 */
 	boolean addStreet (boolean twoWay, E source, E destination)
 	{
+		// Call addEdge from Graph class (includes addToVertexSet and addToAdjList)
+		addEdge(source, dest, COST);
+		if (twoWay) {
+			addEdge(dest, source, COST);
+		}
 		return false;
 	}
 	
@@ -100,6 +105,13 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 */
 	boolean removeStreet (boolean twoWay, E source, E destination)
 	{
+		remove(source, destination);
+		/*
+			NOTE: remove function in Graph.java has a snippet of code for undirected graph. We can just uncomment that section too.
+		*/
+		if (twoWay) {
+			remove(destination, source);
+		}
 		return false;
 	}
 	
