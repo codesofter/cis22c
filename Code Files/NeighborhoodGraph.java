@@ -126,7 +126,7 @@ public void showEulerCircuit(E startLocation, E fixLocation, LinkedStack<E> path
  		startVertex = vertexSet.get(currLocation);
  		Iterator<Entry<E, Pair<Vertex<E>, Double>>> iter_1;
         iter_1 = startVertex.iterator();
-        //E nextLocation;
+        
         System.out.println("Start: " + currLocation);
         System.out.println("showEulerCircuit - 1");
         
@@ -134,12 +134,12 @@ public void showEulerCircuit(E startLocation, E fixLocation, LinkedStack<E> path
         	if (isCompleted(currLocation, fixLocation)) return;
         
         if (iter_1.hasNext()) {
-        	System.out.println("showEulerCircuit - 2a");
+        	System.out.println("showEulerCircuit - Has available edge");
         	moveToNextLocation(currLocation, pathStack);
         	showEulerCircuit(startLocation, fixLocation, pathStack, circuitStack);
         }
         else {
-        	System.out.println("showEulerCircuit - 2b");
+        	System.out.println("showEulerCircuit - has no edge");
         	moveToPreviousLocation(pathStack, circuitStack);
         	showEulerCircuit(startLocation, fixLocation, pathStack, circuitStack);
         }
