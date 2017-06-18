@@ -1,48 +1,51 @@
 Aborn - Nieman
 17
 A 37.31185 -121.80479 Aborn-Brigadoon Intersection
-K 37.30996 -121.80455 Brigadoon-Boswall Intersection
-I 37.31066 -121.80472 Brigadoon-TurnHouse Intersection
-M 37.31021 -121.80326 End of DunDonald Court
 B 37.31228 -121.80238 Aborn-DanderHall Intersection
-Q 37.3104 -121.80051 Laddie-Nieman Intersection
-L 37.31004 -121.80412 End of Boswall Court
-P 37.30971 -121.80223 TurnHouse-Laddie Intersection
-F 37.31168 -121.8036 BridgeCastle-PoltonHall Intersection
-J 37.31083 -121.80335 TurnHouse-PoltonHall Intersection
-D 37.31159 -121.80459 End Of BridgeCastle Court
-O 37.3092 -121.80428 Brigadoon-Laddie Intersection
-G 37.31177 -121.80275 End of Annerly Court
-N 37.31048 -121.80231 TurnHouse-DanderHall Intersection
-H 37.31116 -121.80403 End of Halbreath Court
 C 37.31234 -121.80181 Aborn-Nieman Intersection
-E 37.31161 -121.8041 BridgeCastle-Halbreath Intersection
-K I
-K L
-I A
-I J
-M J
-B N
+D 37.31159 -121.80459 End Of BridgeCastle Court
+E 37.31161 -121.80410 BridgeCastle-Halbreath Intersection
+F 37.31168 -121.80360 BridgeCastle-PoltonHall Intersection
+G 37.31177 -121.80275 End of Annerly Court
+H 37.31116 -121.80403 End of Halbreath Court
+I 37.31066 -121.80472 Brigadoon-TurnHouse Intersection
+J 37.31083 -121.80335 TurnHouse-PoltonHall Intersection
+K 37.30996 -121.80455 Brigadoon-Boswall Intersection
+L 37.31004 -121.80412 End of Boswall Court
+M 37.31021 -121.80326 End of DunDonald Court
+N 37.31048 -121.80231 TurnHouse-DanderHall Intersection
+O 37.30920 -121.80428 Brigadoon-Laddie Intersection
+P 37.30971 -121.80223 TurnHouse-Laddie Intersection
+Q 37.31040 -121.80051 Laddie-Nieman Intersection
+A B
 B C
-Q P
-L K
-P O
-P N
-F G
-F J
-F E
-J I
-J M
-J N
-J F
-D E
-O K
-G F
-N B
-N P
-N J
-H E
 C Q
+Q P
+P O
+O K
+K L
+L K
+K I
+I A
+B N
+N B
+D E
 E D
 E H
+H E
 E F
+F E
+F G
+G F
+F J
+J F
+I J
+J I
+J M
+M J
+J N
+N J
+N P
+P N
+
+

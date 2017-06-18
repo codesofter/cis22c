@@ -1,0 +1,44 @@
+Write a "Demonstration Test Plan" which lists what the user will choose when running the program, and the requirements are:
+•	test EVERY USER OPTION
+•	list the order ot testing
+•	determine what the user will enter at each stage and TYPE IT INTO A DOCUMENT that you print (will TURN IN as part of your DEMONSTRATION TEST PLAN)
+•	be prepared to step through the code when running (using a debugger) to show how it's working
+•	be sure to demonstrate what happens if the user enter invalid data
+
+=====================================================================
+
+					Demonstration Test Plan
+
+=====================================================================
+
+•	At MAIN MENU:
+	- User enters "asdf" to display invalid data
+	- User enters "1" to get to next submenu
+
+•	At SELECTING A NEIGHBORHOOD:
+	- User selects first file
+
+•	At NEIGHBORHOOD MENU:
+	- User selects 2: "Show Euler Circuit"
+	- User selects 3: "Breadth First Traversal"
+	- User selects 4: "Depth First Traversal"
+	- User selects 5: "Show Adjacency Table"
+	- User selects 1: "Update Neighborhood Map"
+
+•	At UPDATE NEIGHBORHOOD MAP MENU:
+	- User selects 1: "Change Neighborhood Name"
+	- User selects 2: "Report/Add New Street"
+		- Select "A" for start destination
+		- Select "Q" for end destination
+		- Select 6: "Show Adjacency Table"
+
+	- User selects 3: "Report/Remove Closed Street"
+		- Select "A" for start destination
+		- Select "Q" for end destination
+		- Select 6: "Show Adjacency Table"
+
+	- User selects 4: "Undo Last Update"
+		- Select 6: "Show Adjacency Table"
+
+	- User selects 5: "Save Neighborhood Map"
+		- Open folder to check new file
