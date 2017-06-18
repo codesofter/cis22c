@@ -15,7 +15,7 @@ public class GroupProject
 	
 	public static void main(String[] args)
 	{	
-		boolean testing = false;		
+		boolean testing = true;		
 		if (testing)
 		{
 			System.out.println("Testing............");

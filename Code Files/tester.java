@@ -30,11 +30,11 @@ public class tester
 	
 	public static boolean testGetEulerCircuit()
 	{
-		//NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
-		//LocationPoint startVertex = graph.findLocationByName("A");
+		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
+		LocationPoint startVertex = graph.findLocationByName("A");
 		//LocationPoint fixVertex = startVertex;
-		//return graph.showEulerCircuit(startVertex, fixVertex, new LocationPointVisitor());
-		return false;
+		graph.getEulerCircuit(startVertex);
+		return true;
 	}
 	
 	public static void display_path()
