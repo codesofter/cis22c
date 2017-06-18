@@ -74,27 +74,93 @@ public class NeighborhoodGraph<E> extends Graph<E>
 	 * 
 	 * Coder: Bruce Decker, Vignesh Senthil
 	 */
-	public void getEulerCircuit(E startLocation, Visitor<E> visitor)
+	public void getEulerCircuit(E startLocation)
 	{
 		LinkedStack<E> pathStack = new LinkedStack<>();
 		LinkedStack<E> circuitStack = new LinkedStack<>();
 		pathStack.push(startLocation);
-		showEulerCircuit(startLocation, pathStack, circuitStack, visitor);
-	}
-
-	public boolean showEulerCircuit(E startLocation, LinkedStack<E> pathStack, LinkedStack<E> circuitStack, Visitor<E> visitor)
-	{
-/*		Vertex<E> startVertex, endVertex;
-		Iterator<Entry<E, Pair<Vertex<E>, Double>>> vertexIterator;
-
-		startVertex = vertexSet.get(startLocation);
-		vertexIterator = startVertex.iterator();
+		showEulerCircuit(startLocation, startLocation, pathStack, circuitStack);
 		
-		if (vertexIterator.hasNext())
+		while (!circuitStack.isEmpty())
 		{
-			endVertex = vertexIterator.next().getValue().first;
-			removeStreet(startLocation, endVertex.getData());
-		}*/
+			System.out.print(circuitStack.pop() + " ");
+		}
+	}
+public boolean isCompleted(E startLocation, E fixLocation)
+{
+	if (!startLocation.equals(fixLocation))	return false;
+	
+	Iterator<Entry<E, Vertex<E>>> vertexIterator;
+	Iterator<Entry<E, Pair<Vertex<E>, Double>>> edgeIterator;
+	
+	vertexIterator = vertexSet.entrySet().iterator();
+	while (vertexIterator.hasNext())
+	{
+		edgeIterator = vertexIterator.next().getValue().iterator();
+		if (edgeIterator.hasNext()) return false;
+	}
+	
+	return true;	
+}
+
+public void moveToNextLocation(E startLocation, LinkedStack<E> pathStack)
+{
+	
+	 Vertex<E> startVertex = vertexSet.get(startLocation);
+	 Iterator<Entry<E, Pair<Vertex<E>, Double>>> iter_1;
+     iter_1 = startVertex.iterator();
+	 E nextLocation = iter_1.next().getValue().first.getData();
+	 pathStack.push(nextLocation);
+	  remove(startLocation, nextLocation);
+}
+
+public void moveToPreviousLocation(LinkedStack<E> pathStack, LinkedStack<E> circuitStack)
+{
+	circuitStack.push(pathStack.pop());
+}
+public void showEulerCircuit(E startLocation, E fixLocation, LinkedStack<E> pathStack, LinkedStack<E> circuitStack)
+	{
+		
+        E currLocation = pathStack.peek();
+ 		Vertex<E> startVertex;
+ 		startVertex = vertexSet.get(currLocation);
+ 		Iterator<Entry<E, Pair<Vertex<E>, Double>>> iter_1;
+        iter_1 = startVertex.iterator();
+        //E nextLocation;
+        System.out.println("Start: " + currLocation);
+        System.out.println("showEulerCircuit - 1");
+        
+        if (currLocation.equals(fixLocation))
+        	if (isCompleted(currLocation, fixLocation)) return;
+        
+        if (iter_1.hasNext()) {
+        	System.out.println("showEulerCircuit - 2a");
+        	moveToNextLocation(currLocation, pathStack);
+        	showEulerCircuit(startLocation, fixLocation, pathStack, circuitStack);
+        }
+        else {
+        	System.out.println("showEulerCircuit - 2b");
+        	moveToPreviousLocation(pathStack, circuitStack);
+        	showEulerCircuit(startLocation, fixLocation, pathStack, circuitStack);
+        }
+        	
+         /*if (currLocation.equals(fixLocation)) {
+        	 if (true) {
+        		 
+        	 } else {
+        		 nextLocation = iter_1.next().getValue().first.getData();
+        		 pathStack.push(nextLocation);
+                 remove(startLocation, nextLocation);
+                 showEulerCircuit(startLocation, fixLocation, pathStack, circuitStack, visitor);
+        	 }
+        	 
+         }
+         else {
+             nextLocation = iter_1.next().getValue().first.getData();
+             pathStack.push(nextLocation);
+             remove(startLocation, nextLocation);
+             showEulerCircuit(startLocation, fixLocation, pathStack, circuitStack, visitor);
+         }*/
 		
 		
 		/* currentLocation = peek of pathStack.
@@ -114,6 +180,7 @@ public class NeighborhoodGraph<E> extends Graph<E>
 		 * 					NextEdge = stackLocation's next edge
 		 * 					nextLocation = destination of nextEdge
 		 *	 				push nextLocation onto pathStack
+		 *					remove NextEdge
 		 *					return recursive call.
 		 * 				}
 		 * 			}
@@ -124,11 +191,24 @@ public class NeighborhoodGraph<E> extends Graph<E>
 		 * 		NextEdge = currentLocation next edge
 		 * 		nextLocation = destination of nextEdge
 		 *	 	push nextLocation onto pathStack
+		 *		remove NextEdge
 		 *		return recursive call.
 		 * }
 		 * 
 		 */
-		return true;
+		
+		/*		Vertex<E> startVertex, endVertex;
+		Iterator<Entry<E, Pair<Vertex<E>, Double>>> vertexIterator;
+
+		startVertex = vertexSet.get(startLocation);
+		vertexIterator = startVertex.iterator();
+		
+		if (vertexIterator.hasNext())
+		{
+			endVertex = vertexIterator.next().getValue().first;
+			removeStreet(startLocation, endVertex.getData());
+		}*/
+		
 		
 		/*Vertex<E> startVertex, endVertex;
 		LinkedQueue<Entry<E, Pair<Vertex<E>, Double>>> listQueue1 = new LinkedQueue<Entry<E, Pair<Vertex<E>, Double>>>();
