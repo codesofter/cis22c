@@ -1,0 +1,61 @@
+Cannongate
+22
+A 37.30919 -121.80428 Brigadoon-Laddie Intersection
+B 37.30971 -121.80205 Laddie-MethilHaven Intersection
+C 37.31038 -121.80050 Laddie-Nieman Intersection
+D 37.30998 -121.80090 Nieman-Teola Intersection
+E 37.30885 -121.79948 Nieman-DanielMaloney Intersection
+F 37.30901 -121.80017 End Of Teola Way
+G 37.30954 -121.80249 North End Of Cannongate Court
+H 37.30919 -121.80239 CannongateCourt Intersection
+I 37.30849 -121.80222 South End Of Cannongate Court
+J 37.30928 -121.80197 MethilHaven-Cannongate Intersection
+K 37.30851 -121.80092 MethilHaven-Court-And-Way Intersection
+L 37.30859 -121.80043 End Of MethilHaven Court
+M 37.30800 -121.80163 MethilHaven-UpHall Intersection
+N 37.30790 -121.80244 End Of UpHall Court
+O 37.30765 -121.80138 DanielMaloney-MethilHaven Intersection
+P 37.30697 -121.80358 Brigadoon-DanielMaloney Intersection
+Q 37.30747 -121.80376 Brigadoon-Postgate Intersection
+R 37.30765 -121.80282 End Of Postgate Court
+S 37.30779 -121.80334 South End Of Innerwick Lane
+T 37.30851 -121.80402 Brigadoon-Innerwick Intersection
+U 37.30859 -121.80353 InnerwickLane Intersection
+V 37.30930 -121.80361 North End Of Innerwick Lane
+A B
+B C
+C D
+D E
+E O
+O P
+P Q
+Q T
+T A
+T U
+U T
+U V
+V U
+U S
+S U
+Q R
+R Q
+G H
+H G
+H I
+I H
+H J
+J H
+B J
+J B
+J K
+K J
+D F
+F D
+K L
+L K
+K M
+M K
+N M
+M N
+M O
+O M

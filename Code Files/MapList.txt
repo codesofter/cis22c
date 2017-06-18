@@ -1,0 +1,11 @@
+5
+Aborn-Neiman
+AbornNieman Map.txt
+Cannongate
+Cannongate Map.txt
+Sterling
+Sterling Map.txt
+File With Bad Data
+BadMapFile.txt
+File Not Existed
+SomeFileName.txt
