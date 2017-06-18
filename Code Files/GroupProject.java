@@ -11,6 +11,7 @@ public class GroupProject
 
 	public static final String tab = "     ";
 	private static NeighborhoodGraph<LocationPoint> graph = null;
+	private static String mapFileName = "";
 	
 	public static void main(String[] args)
 	{	
@@ -18,99 +19,116 @@ public class GroupProject
 		if (testing)
 		{
 			System.out.println("Testing............");
-			tester.testDepthFirstTraversal();
-			//tester.testBreadthFirstTraversal();			
+			tester.testGetEulerCircuit();
+			//System.out.println(found);
+			//tester.testIsValidEdge();
+			//if (found == true)
+			
 			return;
 		}
 		
 		MenuCode mainSelection = MenuCode.MAIN_MENU;
 		do
-		{
-			switch (mainSelection)
+		{			
+			try
 			{
-				case MAIN_MENU:
-					mainSelection = MainMenu();
-					break;
-				case SELECT_NEIGHBORHOOD:  
-					mainSelection = selectNeighborhood();
-					break;
-				case NEIGHBORHOOD_FUNCTIONS:
-					mainSelection = neighborhoodFunctions(graph);
-					break;
-				case UPDATE_NEIGHBORHOOD:
-					mainSelection = updateNeighborhoodMap(graph);
-					break;
-				default:
-					break;
+				switch (mainSelection)
+				{
+					case MAIN_MENU:
+						mainSelection = MainMenu();
+						break;
+					case SELECT_NEIGHBORHOOD:  
+						mainSelection = selectNeighborhood();
+						break;
+					case NEIGHBORHOOD_FUNCTIONS:
+						mainSelection = neighborhoodFunctions(graph);
+						break;
+					case UPDATE_NEIGHBORHOOD:
+						mainSelection = updateNeighborhoodMap(graph);
+						break;
+					default:
+						break;
+				}	
 			}
+			catch (Exception e)
+			{
+				System.out.println(tab + "Runtime error encoutered.");
+				System.out.println(tab + "Return to main menu.");
+				mainSelection = MenuCode.MAIN_MENU;
+			}
+			
 		} while (mainSelection != MenuCode.QUIT);
-
+		
 		return;
 	}
 
 	public static MenuCode MainMenu()
 	{
-		int userInput;
+		StringBuilder menu = new StringBuilder(70);
+		
+		//Build the menu
+		menu.append("\n\nMAIN MENU\n");
+		menu.append("---------\n");		
+		menu.append(tab + "1.  Select a Neighborhood\n");
+		menu.append(tab + "2.  Quit\n");
+		menu.trimToSize();
+		
 		while (true)
 		{
-			System.out.println("\nMAIN MENU");
-			System.out.println("---------");
-			System.out.println(tab + "1.  Select a Neighborhood");
-			System.out.println(tab + "2.  Quit");
+			System.out.println(menu); //Show menu
+				
+			switch (getIntegerInputFromUser())
+			{
+				case 1:			
+					return MenuCode.SELECT_NEIGHBORHOOD;
 
-			System.out.print("\nPlease enter your selection: ");
-			userInput = scanner.nextInt();
-
-			if (userInput == 1)
-				return MenuCode.SELECT_NEIGHBORHOOD;
-			else if (userInput == 2)
-				return MenuCode.QUIT;
-			else
-				System.out.println(tab + "Your selection is invalid.\n");
+				case 2:
+					return MenuCode.QUIT;	
+					
+				default:
+					System.out.println(tab + "Your selection is invalid.");
+					break;
+			}
 		}
 	}
 
 	public static MenuCode selectNeighborhood()
 	{
-		int userInput;
+		String[][] mapList = GraphIO.getNeighborhoodList("MapList.txt");		
+		if (mapList == null) return MenuCode.MAIN_MENU;
+		
+		int userInput, numberOfRecords;
+		StringBuilder menu = new StringBuilder(1000);
+		numberOfRecords = mapList.length;
+		
+		//Build the menu
+		menu.append("\n\nSELECTING A NEIGHBORHOOD\n");
+		menu.append("------------------------\n");		
+		for (int i = 0; i < numberOfRecords; i++)
+			menu.append(String.format("%s%d. %s (%s)\n", tab, i + 1, mapList[i][0], mapList[i][1]));
+		
+		menu.append(String.format("%s%d. Main Menu\n", tab, numberOfRecords + 1));
+		menu.trimToSize();
+		
 		while (true)
-		{
-			System.out.println("\nSELECTING A NEIGHBORHOOD");
-			System.out.println("------------------------");
-			System.out.println(tab + "1.  Name of Neighborhood 1");
-			System.out.println(tab + "2.  Name of Neighborhood 2");
-			System.out.println(tab + "3.  Name of Neighborhood 3 (Bad Data)");
-			System.out.println(tab + "4.  Name of Neighborhood 4 (File not existed)");
-			System.out.println(tab + "5.  Main Menu");
-
-			System.out.print("\nPlease enter your selection: ");
-			userInput = scanner.nextInt();
-
-			if ((userInput >= 1) && (userInput <= 2))
+		{						
+			System.out.println(menu); //Show menu
+			userInput = getIntegerInputFromUser();
+			
+			if ((userInput >= 1) && (userInput <= numberOfRecords))
 			{
-				graph = GraphIO.getNeighborhoodMap("NeighborhoodMap1.txt");
+				mapFileName = mapList[userInput - 1][1];
+				graph = GraphIO.getNeighborhoodMap(mapFileName);
+				
 				if (graph == null)
 					return MenuCode.SELECT_NEIGHBORHOOD;
 				else
+				{
+					graph.clearUndoStack();
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-			} 
-			else if (userInput == 3)
-			{
-				graph = GraphIO.getNeighborhoodMap("BadMapFile.txt");
-				if (graph == null)
-					return MenuCode.SELECT_NEIGHBORHOOD;
-				else
-					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-			} 
-			else if (userInput == 4)
-			{
-				graph = GraphIO.getNeighborhoodMap("InvalidFileName.txt");
-				if (graph == null)
-					return MenuCode.SELECT_NEIGHBORHOOD;
-				else
-					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-			} 
-			else if (userInput == 5)
+				}
+			} 			
+			else if (userInput ==  numberOfRecords + 1)
 				return MenuCode.MAIN_MENU;
 			else
 				System.out.println(tab + "Your selection is invalid.\n");
@@ -119,163 +137,236 @@ public class GroupProject
 
 	public static MenuCode neighborhoodFunctions(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
-		if (graph == null) 
-			throw new NullPointerException("NeighborhoodFunctions - Input parameter can not be null.");
+		if (inputGraph == null) 
+			throw new NullPointerException("NeighborhoodFunctions - Input parameter can not be null.");		
 		
-		int userInput;
+		StringBuilder menu = new StringBuilder(400);
+		
+		//Build the menu
+		menu.append(String.format("\n\nNEIGHBORHOOD MENU FOR %s\n", inputGraph.getNeighborhoodName().toUpperCase()));
+		menu.append("-------------------------------------\n");
+		menu.append(tab + "1.  Update Neighborhood Map\n");
+		menu.append(tab + "2.  Show Euler Circuit\n");
+		menu.append(tab + "3.  Show Breadth First Traversal\n");
+		menu.append(tab + "4.  Show Depth First Traversal\n");
+		menu.append(tab + "5.  Show Adjacency Table\n");
+		menu.append(tab + "6.  Return to previous Menu\n");
+		menu.append(tab + "7.  Main Menu\n");		
+		menu.trimToSize();
+		
 		while (true)
-		{
-			System.out.println("\nNEIGHBORHOOD MENU");
-			System.out.println("-----------------");
-			System.out.println(tab + "1.  Update Neighborhood Map");
-			System.out.println(tab + "2.  Show Euler Circuit");
-			System.out.println(tab + "3.  Show Breadth First Traversal");
-			System.out.println(tab + "4.  Show Depth First Traversal");
-			System.out.println(tab + "5.  Show Adjacent List Table");
-			System.out.println(tab + "6.  Return to previous Menu");
-			System.out.println(tab + "7.  Main Menu");
-
-			System.out.print("\nPlease enter your selection: ");
-			userInput = scanner.nextInt();
-
-			if (userInput == 1)
-				return MenuCode.UPDATE_NEIGHBORHOOD;
-			else if (userInput == 2)
+		{					
+			System.out.println(menu); //Show menu
+			
+			switch (getIntegerInputFromUser())
 			{
-				System.out.println(tab + "Processing your selection....\n");
-				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-			}	
-			else if (userInput == 3)
-			{
-				showBreadthFirstTraversal(inputGraph);
-				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-			}	
-			else if (userInput == 4)
-			{
-				showDepthFirstTraversal(inputGraph);
-				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-			}	
-			else if (userInput == 5)
-			{
-				showAdjacencyList(inputGraph);
-				return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-			}				
-			else if (userInput == 6)
-				return MenuCode.SELECT_NEIGHBORHOOD;
-			else if (userInput == 7)
-				return MenuCode.MAIN_MENU;
-			else
-				System.out.println(tab + "Your selection is invalid.\n");
+				case 1:			
+					return MenuCode.UPDATE_NEIGHBORHOOD;
+					
+				case 2:
+					tester.testGetEulerCircuit();
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+					
+				case 3:
+					showBreadthFirstTraversal(inputGraph);
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+					
+				case 4:
+					showDepthFirstTraversal(inputGraph);
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+					
+				case 5:
+					showAdjacencyTable(inputGraph);
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+					
+				case 6:
+					return MenuCode.SELECT_NEIGHBORHOOD;
+					
+				case 7:
+					return MenuCode.MAIN_MENU;
+					
+				default:
+					System.out.println(tab + "Your selection is invalid.");
+					break;
+			}
 		}
 	}	
 
-	/*	 
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: Bao Chau
-	 * 
-	 */	 
 	public static MenuCode updateNeighborhoodMap(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
-		int userInput;
+		if (inputGraph == null) 
+			throw new NullPointerException("UpdateNeighborhoodMap - Input parameter can not be null.");		
+		
+		StringBuilder menu = new StringBuilder(350);		
+		
+		//Build the menu
+		menu.append(String.format("\n\nUPDATE NEIGHHOOD MAP FOR %s\n", inputGraph.getNeighborhoodName().toUpperCase()));
+		menu.append("----------------------------------\n");
+		menu.append(tab + "1.  Change Neighborhood Name\n");
+		menu.append(tab + "2.  Report/Add New Street\n");
+		menu.append(tab + "3.  Report/Remove Closed Street\n");
+		menu.append(tab + "4.  Undo Last Update\n");
+		menu.append(tab + "5.  Save Neighborhood Map\n");
+		menu.append(tab + "6.  Show Adjacency Table\n");
+		menu.append(tab + "7.  Return to previous Menu\n");
+		menu.append(tab + "8.  Main Menu\n");
+		menu.trimToSize();
+		
 		while (true)
-		{
-			System.out.println("\nUPDATE NEIGHHOOD MAP");
-			System.out.println("--------------------");
-			System.out.println(tab + "1.  Change Neighborhood Name");
-			System.out.println(tab + "2.  Report New Street");
-			System.out.println(tab + "3.  Report Closed Street");
-			System.out.println(tab + "4.  Undo Last Update");
-			System.out.println(tab + "5.  Save Neighborhood Map");
-			System.out.println(tab + "6.  Return to previous Menu");
-			System.out.println(tab + "7.  Main Menu");
-
-			System.out.print("\nPlease enter your selection: ");
-			userInput = scanner.nextInt();
-
-			if (userInput == 1)
+		{		
+			System.out.println(menu); //Show menu
+			
+			switch (getIntegerInputFromUser())
 			{
-				changeNeighborhoodName(inputGraph);
-				return MenuCode.UPDATE_NEIGHBORHOOD;
+				case 1:			
+					changeNeighborhoodName(inputGraph);
+					return MenuCode.UPDATE_NEIGHBORHOOD;
+					
+				case 2:
+					addStreet(inputGraph);
+					break;
+					
+				case 3:
+					removeStreet(inputGraph);
+					break;
+					
+				case 4:
+					undoLastUpdate(inputGraph);
+					return MenuCode.UPDATE_NEIGHBORHOOD;
+					
+				case 5:
+					GraphIO.saveGraphToFile(inputGraph, mapFileName);
+					break;
+					
+				case 6:
+					showAdjacencyTable(inputGraph);
+					return MenuCode.UPDATE_NEIGHBORHOOD;
+					
+				case 7:
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+					
+				case 8:
+					return MenuCode.MAIN_MENU;
+					
+				default:
+					System.out.println(tab + "Your selection is invalid.");
+					break;
 			}
-			else if ((userInput >= 2) && (userInput <= 5))
-				System.out.println(tab + "Processing your selection....\n");
-			else if (userInput == 6)
-				return MenuCode.SELECT_NEIGHBORHOOD;
-			else if (userInput == 7)
-				return MenuCode.MAIN_MENU;
-			else
-				System.out.println(tab + "Your selection is invalid.\n");
 		}
 	}
 
-	public static void showAdjacencyList(NeighborhoodGraph<LocationPoint> inputGraph)
+	//Get an input from user. If it is a valid integer, return the integer value.
+	//If user did not enter a valid integer, return -1.
+	public static int getIntegerInputFromUser()
 	{
-		System.out.println();	
-		System.out.println(tab + "Adjacency List Output:");
-		graph.showAdjTable();
-		System.out.println();			
+		int userInput = -1;
+		try
+		{
+			System.out.print("Please enter your selection: ");
+			userInput = scanner.nextInt();
+			scanner.nextLine();
+		}
+		catch (Exception e)
+		{
+			if (scanner.hasNext()) scanner.nextLine();
+			userInput = -1;
+		}
+		return userInput;
+	}
+	
+	public static void showAdjacencyTable(NeighborhoodGraph<LocationPoint> inputGraph)
+	{		
+		System.out.println("\n" + tab + "Adjacency List Output:");
+		graph.showAdjTable();		
 	}
 	
 	public static void showBreadthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
-		String input;
-		LocationPoint startPoint;
-		
-		System.out.print("Please enter the start location: ");
-		if (scanner.hasNext()) scanner.nextLine();
-		input = scanner.nextLine().trim();
-		
-		startPoint = graph.findLocationByName(input);
+		LocationPoint startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint != null)
 		{
+			System.out.print("\n" + tab + "Depth First Traversal Output:\n" + tab);
+			graph.breadthFirstTraversal(startPoint, new LocationPointVisitor());
 			System.out.println();	
-			System.out.println(tab + "Breadth First Traversal Output:");
-			System.out.print(tab);
-			LocationPoint startElement = graph.findLocationByName("A");
-			graph.breadthFirstTraversal(startElement, new LocationPointVisitor());
-			System.out.println();				
 		}
-		else
-			System.out.println(tab + "The location entry is invalid.");
 	}	
 
 	public static void showDepthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
-		String input;
-		LocationPoint startPoint;
-		
-		System.out.print("Please enter the start location: ");
-		if (scanner.hasNext()) scanner.nextLine();
-		input = scanner.nextLine().trim();
-		
-		startPoint = graph.findLocationByName(input);
+		LocationPoint startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint != null)
 		{
-			System.out.println();	
-			System.out.println(tab + "Depth First Traversal Output:");
-			System.out.print(tab);
+			System.out.print("\n" + tab + "Depth First Traversal Output:\n" + tab);
 			graph.depthFirstTraversal(startPoint, new LocationPointVisitor());
 			System.out.println();	
 		}
-		else
+	}	
+	
+	public static void addStreet(NeighborhoodGraph<LocationPoint> inputGraph)
+	{
+		LocationPoint startPoint, endLocation;
+		
+		startPoint = AskUserForLocation("Please enter the start location: ");
+		if (startPoint == null) return;
+		
+		endLocation = AskUserForLocation("Please enter the end location: ");
+		if (endLocation == null) return;
+		
+		inputGraph.addStreet(startPoint, endLocation);
+		
+		System.out.print(tab + "Report/Add New Street is completed.");	
+		return;
+	}
+	
+	public static void removeStreet(NeighborhoodGraph<LocationPoint> inputGraph)
+	{
+		LocationPoint startPoint, endLocation;
+		
+		startPoint = AskUserForLocation("Please enter the start location: ");
+		if (startPoint == null) return;
+		
+		endLocation = AskUserForLocation("Please enter the end location: ");
+		if (endLocation == null) return;
+		
+		inputGraph.removeStreet(startPoint, endLocation);
+		
+		System.out.print(tab + "Report/Remove Closed Street is completed.");		
+		return;
+	}
+	
+	public static LocationPoint AskUserForLocation(String prompt)
+	{
+		String input = "";
+		LocationPoint location;
+		
+		System.out.print(prompt);
+		while (input.equals(""))
+			input = scanner.nextLine().trim();
+		
+		location = graph.findLocationByName(input);
+		
+		if (location == null)
 			System.out.println(tab + "The location entry is invalid.");
+		
+		return location;
 	}	
 	
 	public static void changeNeighborhoodName(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
-		String newName;
-		System.out.println("Please enter the new name: ");
+		String newName = "";
+		System.out.print("Please enter the new name: ");
+		while (newName.equals(""))
+			newName = scanner.nextLine().trim();
 		
-		if (scanner.hasNext()) scanner.nextLine();
-		newName = scanner.nextLine().trim();
-		
-		if (newName.length() == 0)
-			System.out.println("The input name is blank.");
+		inputGraph.setNeighborhoodName(newName);									
+		System.out.println(tab + "New neighborhood name is: " + inputGraph.getNeighborhoodName());
+	}
+	
+	public static void undoLastUpdate(NeighborhoodGraph<LocationPoint> inputGraph)
+	{
+		if (inputGraph.undoLastUpdate())
+			System.out.println(tab + "Undo completed.");
 		else
-		{
-			inputGraph.setNeighborhoodName(newName);
-			System.out.println("New neighborhood name is: " + inputGraph.getNeighborhoodName());
-		}
+			System.out.println(tab + "Undo failed. Undo stack is empty.");
 	}
 }
