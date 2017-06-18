@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+/*
+		Helper interface to undo certain methods (add/remove/etc).
 
+		Coder: So Choi, Bao Chau
+ */
 interface Undoable
 {
 	public void undo();

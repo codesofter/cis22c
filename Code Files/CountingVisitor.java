@@ -12,5 +12,4 @@ public class CountingVisitor implements Visitor<LocationPoint>
 	public void resetCount() {
 		count = 0;
 	}
-
 }

@@ -1,4 +1,8 @@
+/*
+		Helper class to undo adding a street.
 
+		Coder: So Choi, Bao Chau
+ */
 public class UndoAddStreet<E> implements Undoable
 {
 	E startLocation, endLocation;

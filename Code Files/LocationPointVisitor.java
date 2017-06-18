@@ -2,9 +2,9 @@
 public class LocationPointVisitor implements Visitor<LocationPoint>
 {
 	/*
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: Bruce Decker, So Choi
+			Define visit method to print the LocationPoint object.
+
+			Coder: So Choi, Bao Chau
 	 */
 	@Override
 	public void visit(LocationPoint obj)

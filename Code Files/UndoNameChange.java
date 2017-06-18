@@ -1,4 +1,8 @@
+/*
+		Helper class to undo renaming a neighborhood graph.
 
+		Coder: So Choi, Bao Chau
+ */
 public class UndoNameChange<E> implements Undoable
 {
 	String oldName;

@@ -21,9 +21,10 @@ public class GraphIO
 	}
 
 	/*
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: So Choi, Bao Chau
+			Retrieves an input file based on user's selection and parses input data to generate the graph.
+				@return graph data or null based on whether the file data is correct
+
+			Coder: So Choi, Bao Chau
 	 */
 	public static NeighborhoodGraph<LocationPoint> getNeighborhoodMap(String filename)
 	{
@@ -81,9 +82,7 @@ public class GraphIO
 			}
 			
 			graph.clearUndoStack();
-		} 
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			System.out.println(String.format("%sUnable to read data from \"%s\" file.", 
 					GroupProject.tab, filename));
 			graph = null;
@@ -94,9 +93,9 @@ public class GraphIO
 	}
 	
 	/*
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: So Choi, Bao Chau
+			Parse a master list of file names to retrieve for input.
+
+			Coder: So Choi, Bao Chau
 	 */
 	public static String[][] getNeighborhoodList(String filename)
 	{
@@ -142,6 +141,12 @@ public class GraphIO
 		return mapList;
 	}
 	
+	
+	/*
+			Retrieve current graph and filename of the user selected/modified graph, then save to a new file.
+
+			Coder: Bao Chau
+	 */
 	public static boolean saveGraphToFile(NeighborhoodGraph<LocationPoint> targetGraph, String filename)
 	{
 		FileOutputStream outputFile;

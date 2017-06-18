@@ -22,9 +22,9 @@ public class LocationPoint
 	public String toString() { return name; }
 	
 	/*
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: So Choi, Bao Chau
+			Define equals method to check the LocationPoint object's name/latitude/longitude.
+
+			Coder: So Choi, Bao Chau
 	 */
 	public boolean equals(LocationPoint obj)
 	{
@@ -37,12 +37,6 @@ public class LocationPoint
 			return (longitude == obj.longitude);
 	}
 	
-	
-	/*
-	 * Description (or) documentation of methods.
-	 * 
-	 * Coder: So Choi, Bao Chau
-	 */
 	public int hashCode()
 	{
 		int hashCode = 0;
