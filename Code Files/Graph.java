@@ -155,6 +155,7 @@ public class Graph<E>
 	{
 		Iterator<Entry<E, Vertex<E>>> iter;
 
+		//GroupProject.tab is defined as blank spaces ("     ")
 		System.out.println(GroupProject.tab + "------------------------ ");
 		iter = vertexSet.entrySet().iterator();
 		while (iter.hasNext())
@@ -229,9 +230,8 @@ public class Graph<E>
 		}
 	} // end breadthFirstTraversalHelper
 
+	
 	/*
-	 * Description (or) documentation of methods.
-	 * 
 	 * Coder: Bruce Decker
 	 */
 	public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor)
@@ -257,4 +257,6 @@ public class Graph<E>
 	// WRITE THE GRAPH's vertices and its
 	// adjacency list TO A TEXT FILE (SUGGEST TO PASS AN
 	// ALREADY OPEN PrintWriter TO THIS) !
+	
+	
 }

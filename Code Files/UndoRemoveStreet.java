@@ -1,7 +1,5 @@
 /*
-		Helper class to remove adding a street.
-
-		Coder: So Choi, Bao Chau
+ * Coder: Bao Chau
  */
 public class UndoRemoveStreet<E> implements Undoable
 {

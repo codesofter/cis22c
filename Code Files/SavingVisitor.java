@@ -1,10 +1,8 @@
 import java.io.PrintWriter;
 
 /*
-		Helper class for saving current progress to file.
-
-		Coder: Bruce Decker, Bao Chau
- */
+* Coder: Bao Chau
+*/
 public class SavingVisitor implements Visitor<LocationPoint>
 {
 	PrintWriter printWriter;

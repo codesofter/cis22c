@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GroupProject
 {
 	public static Scanner scanner = new Scanner(System.in);
 
-	public enum MenuCode
+	private enum MenuCode
 	{
 		MAIN_MENU, SELECT_NEIGHBORHOOD, UPDATE_NEIGHBORHOOD, NEIGHBORHOOD_FUNCTIONS, QUIT
 	}
@@ -12,18 +13,19 @@ public class GroupProject
 	public static final String tab = "     ";
 	private static NeighborhoodGraph<LocationPoint> graph = null;
 	private static String mapFileName = "";
-	
+
+
+	/*
+	 * Coder: Bruce Decker, So Choi, Bao Chau
+	 */
 	public static void main(String[] args)
 	{	
-		boolean testing = true;		
+		boolean testing = false;		
 		if (testing)
 		{
 			System.out.println("Testing............");
-			tester.testGetEulerCircuit();
-			//System.out.println(found);
-			//tester.testIsValidEdge();
-			//if (found == true)
-			
+			//Call test function.
+			tester.testHasEulerCircuit();
 			return;
 		}
 		
@@ -62,7 +64,10 @@ public class GroupProject
 		return;
 	}
 
-	public static MenuCode MainMenu()
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static MenuCode MainMenu()
 	{
 		StringBuilder menu = new StringBuilder(70);
 		
@@ -92,7 +97,10 @@ public class GroupProject
 		}
 	}
 
-	public static MenuCode selectNeighborhood()
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static MenuCode selectNeighborhood()
 	{
 		String[][] mapList = GraphIO.getNeighborhoodList("MapList.txt");		
 		if (mapList == null) return MenuCode.MAIN_MENU;
@@ -135,7 +143,10 @@ public class GroupProject
 		}
 	}
 
-	public static MenuCode neighborhoodFunctions(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static MenuCode neighborhoodFunctions(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		if (inputGraph == null) 
 			throw new NullPointerException("NeighborhoodFunctions - Input parameter can not be null.");		
@@ -164,7 +175,7 @@ public class GroupProject
 					return MenuCode.UPDATE_NEIGHBORHOOD;
 					
 				case 2:
-					tester.testGetEulerCircuit();
+					showEulerCircuit(inputGraph);
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
 					
 				case 3:
@@ -192,7 +203,10 @@ public class GroupProject
 		}
 	}	
 
-	public static MenuCode updateNeighborhoodMap(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static MenuCode updateNeighborhoodMap(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		if (inputGraph == null) 
 			throw new NullPointerException("UpdateNeighborhoodMap - Input parameter can not be null.");		
@@ -255,9 +269,13 @@ public class GroupProject
 		}
 	}
 
+	
 	//Get an input from user. If it is a valid integer, return the integer value.
 	//If user did not enter a valid integer, return -1.
-	public static int getIntegerInputFromUser()
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static int getIntegerInputFromUser()
 	{
 		int userInput = -1;
 		try
@@ -274,24 +292,102 @@ public class GroupProject
 		return userInput;
 	}
 	
-	public static void showAdjacencyTable(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void showAdjacencyTable(NeighborhoodGraph<LocationPoint> inputGraph)
 	{		
 		System.out.println("\n" + tab + "Adjacency List Output:");
 		graph.showAdjTable();		
 	}
 	
-	public static void showBreadthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void showEulerCircuit(NeighborhoodGraph<LocationPoint> inputGraph) {
+		LocationPoint location;
+		boolean hasResult = false;
+		String response = "", fileName = "";
+		LocationPoint startLocation = AskUserForLocation("Please enter the start location: ");
+		ArrayList<String> eulerDisplayList;
+		
+		if (startLocation != null) {
+			LinkedStack<LocationPoint> eulerCiruitStack = inputGraph.getEulerCircuit(startLocation);
+			hasResult = !eulerCiruitStack.isEmpty();
+			
+			eulerDisplayList = convertEulerOutput(inputGraph.getNeighborhoodName(), eulerCiruitStack);
+			
+			for (String line : eulerDisplayList)
+				System.out.println(tab + line);
+
+			if (hasResult)
+			{
+				System.out.print("\nWould you like to save the output?\n(Enter Y for yes, other for no): ");
+
+				while (response.equals(""))
+					response = scanner.nextLine().trim().toUpperCase();
+
+				if (response.equals("Y") || (response.equals("YES"))) {
+					System.out.print("Please enter to output file name: ");
+					
+					while (fileName.equals("")) {
+						fileName = scanner.nextLine().trim();
+					}
+
+					GraphIO.saveTextToFile(fileName, eulerDisplayList);
+				}
+			}
+		}
+	}
+	
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static ArrayList<String> convertEulerOutput(String neighborhoodName, LinkedStack<LocationPoint> eulerCiruitStack)
+	{
+		LocationPoint location;
+		ArrayList<String> eulerList = new ArrayList<>();
+		
+		//Add title row
+		eulerList.add(String.format("Euler Circuit output for \"%s\" neighborhood: ", neighborhoodName));
+
+		if (!eulerCiruitStack.isEmpty()) {			
+			location = eulerCiruitStack.pop();			
+			eulerList.add(String.format("Starting at %s (%s)", location.getName(), location.getDescription()));		
+
+			while (!eulerCiruitStack.isEmpty()) 
+			{
+				location = eulerCiruitStack.pop();
+				if (!eulerCiruitStack.isEmpty())
+					eulerList.add(String.format("%sGo to %s (%s)", tab, location.getName(), location.getDescription()));
+				else
+					eulerList.add(String.format("Go back to starting location at %s (%s)", location.getName(), location.getDescription()));
+			}
+		} else 
+		{
+			eulerList.add("Your graph configuration does not have an Euler Circuit.");
+		}
+		return eulerList;
+	}
+	
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void showBreadthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		LocationPoint startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint != null)
 		{
-			System.out.print("\n" + tab + "Depth First Traversal Output:\n" + tab);
+			System.out.print("\n" + tab + "Breadth First Traversal Output:\n" + tab);
 			graph.breadthFirstTraversal(startPoint, new LocationPointVisitor());
 			System.out.println();	
 		}
 	}	
 
-	public static void showDepthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void showDepthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		LocationPoint startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint != null)
@@ -302,7 +398,10 @@ public class GroupProject
 		}
 	}	
 	
-	public static void addStreet(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void addStreet(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		LocationPoint startPoint, endLocation;
 		
@@ -318,7 +417,10 @@ public class GroupProject
 		return;
 	}
 	
-	public static void removeStreet(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void removeStreet(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		LocationPoint startPoint, endLocation;
 		
@@ -334,7 +436,10 @@ public class GroupProject
 		return;
 	}
 	
-	public static LocationPoint AskUserForLocation(String prompt)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static LocationPoint AskUserForLocation(String prompt)
 	{
 		String input = "";
 		LocationPoint location;
@@ -351,7 +456,10 @@ public class GroupProject
 		return location;
 	}	
 	
-	public static void changeNeighborhoodName(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void changeNeighborhoodName(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		String newName = "";
 		System.out.print("Please enter the new name: ");
@@ -362,7 +470,10 @@ public class GroupProject
 		System.out.println(tab + "New neighborhood name is: " + inputGraph.getNeighborhoodName());
 	}
 	
-	public static void undoLastUpdate(NeighborhoodGraph<LocationPoint> inputGraph)
+	/*
+	 * Coder: Bao Chau
+	 */
+	private static void undoLastUpdate(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
 		if (inputGraph.undoLastUpdate())
 			System.out.println(tab + "Undo completed.");

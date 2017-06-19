@@ -3,11 +3,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GraphIO
 {
-	// opens a text file for input, returns a Scanner:
+	/*
+	 * Coder: Bao Chau
+	 * opens a text file for input, returns a Scanner:
+	 */
 	public static Scanner openInputFile(String filename)
 	{
 		File file = new File(filename);
@@ -21,12 +25,9 @@ public class GraphIO
 	}
 
 	/*
-			Retrieves an input file based on user's selection and parses input data to generate the graph.
-				@return graph data or null based on whether the file data is correct
-
-			Coder: So Choi, Bao Chau
+	 * Coder: Bao Chau
 	 */
-	public static NeighborhoodGraph<LocationPoint> getNeighborhoodMap(String filename)
+	public static NeighborhoodGraph<LocationPoint> getNeighborhoodMap(String fileName)
 	{
 		String neighborhoodName, name, description, source, destination;
 		int numberOfLocation;
@@ -35,11 +36,11 @@ public class GraphIO
 		NeighborhoodGraph<LocationPoint> graph = null;
 		
 		//Open file. If unsuccessful, display error message and return null. 
-		Scanner fileScanner = openInputFile(filename);;
+		Scanner fileScanner = openInputFile(fileName);;
 		if (fileScanner == null) 
 		{
 			System.out.println(String.format("%sUnable to open \"%s\" file.", 
-					GroupProject.tab, filename));
+					GroupProject.tab, fileName));
 			return null;
 		}
 		
@@ -82,9 +83,11 @@ public class GraphIO
 			}
 			
 			graph.clearUndoStack();
-		} catch (Exception ex) {
+		} 
+		catch (Exception ex)
+		{
 			System.out.println(String.format("%sUnable to read data from \"%s\" file.", 
-					GroupProject.tab, filename));
+					GroupProject.tab, fileName));
 			graph = null;
 		}
 
@@ -93,21 +96,19 @@ public class GraphIO
 	}
 	
 	/*
-			Parse a master list of file names to retrieve for input.
-
-			Coder: So Choi, Bao Chau
+	 * Coder: Bao Chau
 	 */
-	public static String[][] getNeighborhoodList(String filename)
+	public static String[][] getNeighborhoodList(String fileName)
 	{
 		int numberOfRecords;
 		String name, mapFileName;
 		String[][] mapList;
 		
 		// Open file. If unsuccessful, display error message and return null.
-		Scanner fileScanner = openInputFile(filename);
+		Scanner fileScanner = openInputFile(fileName);
 		if (fileScanner == null)
 		{
-			System.out.println(String.format("%sUnable to open \"%s\" file.", GroupProject.tab, filename));
+			System.out.println(String.format("%sUnable to open \"%s\" file.", GroupProject.tab, fileName));
 			return null;
 		}
 
@@ -123,31 +124,48 @@ public class GraphIO
 			//Create new array with array row size based on numberOfRecords.
 			mapList = new String[numberOfRecords][2];		
 			
-			// Read the vertices.
 			for (int i = 0; i < numberOfRecords; i++)
-			{
-				name = fileScanner.nextLine().trim();
-				mapFileName = fileScanner.nextLine();
+			{				
+				mapFileName = fileScanner.nextLine().trim();
+				name = getNeighborhoodNameFromFile(mapFileName);
+				
 				mapList[i][0] = name;
 				mapList[i][1] = mapFileName;
 			}
 
 		} catch (Exception ex)
 		{
-			System.out.println(String.format("%sUnable to read data from \"%s\" file.", GroupProject.tab, filename));
+			System.out.println(String.format("%sUnable to read data from \"%s\" file.", GroupProject.tab, fileName));
 			mapList = null;
 		}
 
+		fileScanner.close();
 		return mapList;
 	}
 	
+	private static String getNeighborhoodNameFromFile(String fileName)
+	{
+		String neighborhoodName;
+
+		// Open file. If unsuccessful, display error message and return default string.
+		Scanner fileScanner = openInputFile(fileName);
+		if (fileScanner == null) return "Unknown";
+
+		try
+		{
+			neighborhoodName = fileScanner.nextLine();
+		} catch (Exception ex)
+		{
+			neighborhoodName = "Unknown";
+		}
+		fileScanner.close();
+		return neighborhoodName;
+	}
 	
 	/*
-			Retrieve current graph and filename of the user selected/modified graph, then save to a new file.
-
-			Coder: Bao Chau
+	 * Coder: Bao Chau
 	 */
-	public static boolean saveGraphToFile(NeighborhoodGraph<LocationPoint> targetGraph, String filename)
+	public static boolean saveGraphToFile(NeighborhoodGraph<LocationPoint> targetGraph, String fileName)
 	{
 		FileOutputStream outputFile;
 		PrintWriter outputWriter = null;
@@ -158,7 +176,7 @@ public class GraphIO
 		
 		try 
 		{
-			outputFile = new FileOutputStream(filename);
+			outputFile = new FileOutputStream(fileName);
 			outputWriter = new PrintWriter(outputFile, true);
 
 			savingVisitor = new SavingVisitor();
@@ -168,15 +186,40 @@ public class GraphIO
 			if (result == true) 
 			{
 				targetGraph.clearUndoStack();
-				System.out.println(String.format("%sData has been saved to \"%s\" file.", GroupProject.tab, filename));				
+				System.out.println(String.format("%sData has been saved to \"%s\" file.", GroupProject.tab, fileName));				
 			}
 		}
 		catch (Exception e) {
-			System.out.println(String.format("%sUnable to write data to \"%s\" file.", GroupProject.tab, filename));
+			System.out.println(String.format("%sUnable to write data to \"%s\" file.", GroupProject.tab, fileName));
 			result = false;
 		}		
 		
 		if (outputWriter != null) outputWriter.close();
 		return result;
+	}
+	
+	/*
+	 * Coder: Bao Chau
+	 */
+	public static void saveTextToFile(String fileName, ArrayList<String> inputText)
+	{
+		FileOutputStream outputFile;
+		PrintWriter outputWriter = null;
+		
+		try 
+		{
+			outputFile = new FileOutputStream(fileName);
+			outputWriter = new PrintWriter(outputFile, true);
+
+			for (String line : inputText)
+				outputWriter.println(line);
+			
+			System.out.println(String.format("%sData has been saved to \"%s\" file.", GroupProject.tab, fileName));	
+		}
+		catch (Exception e) {
+			System.out.println(String.format("%sUnable to write data to \"%s\" file.", GroupProject.tab, fileName));
+		}		
+		
+		if (outputWriter != null) outputWriter.close();		
 	}
 }

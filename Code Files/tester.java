@@ -1,4 +1,7 @@
 
+/*
+* Coder: Bruce Decker, So Choi, Bao Chau
+*/
 public class tester
 {
 	public static void testMapDataInput()
@@ -32,30 +35,32 @@ public class tester
 	{
 		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
 		LocationPoint startVertex = graph.findLocationByName("A");
-		//LocationPoint fixVertex = startVertex;
 		graph.getEulerCircuit(startVertex);
 		return true;
 	}
 	
-	public static void display_path()
-	{
-		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
-		graph.display_path();
-	}
+
 	
-	public void testHasEulerCircuit()
+	public static void testHasEulerCircuit()
 	{
-		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
-		//LocationPoint startElement = graph.findLocationByName("A");
-		graph.hasEulerCircuit();
-	}
-	
-	public  static void testIsValidEdge() {
-		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
-		LocationPoint startLocation = graph.findLocationByName("B");
-		LocationPoint endLocation = graph.findLocationByName("N");
+/*		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
+		LocationPoint startVertex = graph.findLocationByName("A");
+		LocationPoint endVertex = graph.findLocationByName("B");
 		
-		graph.isNextEdgeValid(startLocation, endLocation);
+		System.out.println("Original graph, hasEulerCircuit returns: " + graph.hasEulerCircuit(startVertex));
+		
+		graph.remove(startVertex, endVertex);
+		System.out.println("Remove A -> B, hasEulerCircuit returns: " + graph.hasEulerCircuit(startVertex));
+		
+		graph.addEdge(startVertex, endVertex, 0.0);
+		System.out.println("Add A -> B back, hasEulerCircuit returns: " + graph.hasEulerCircuit(startVertex));
+		return true;*/
+		//return graph.hasEulerCircuit(startVertex);
+		/*
+		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
+		LocationPoint startElement = graph.findLocationByName("A");
+		graph.hasEulerCircuit();
+		*/
 	}
 	
 }
