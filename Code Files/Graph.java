@@ -68,13 +68,14 @@ class Vertex<E>
 		Entry<E, Pair<Vertex<E>, Double>> entry;
 		Pair<Vertex<E>, Double> pair;
 
-		System.out.print("Adj List for " + data + ": ");
+		System.out.print("Adj List for " + data + ":  ");
 		iter = adjList.entrySet().iterator();
 		while (iter.hasNext())
 		{
 			entry = iter.next();
 			pair = entry.getValue();
-			System.out.print(pair.first.data + "(" + String.format("%3.1f", pair.second) + ") ");
+			System.out.print(pair.first.data + "(" + String.format("%3.1f", pair.second) + ")");
+			if (iter.hasNext()) System.out.print(",  "); 
 		}
 		System.out.println();
 	}
@@ -156,11 +157,11 @@ public class Graph<E>
 		Iterator<Entry<E, Vertex<E>>> iter;
 
 		//GroupProject.tab is defined as blank spaces ("     ")
-		System.out.println(GroupProject.tab + "------------------------ ");
+		System.out.println("     ------------------------ ");
 		iter = vertexSet.entrySet().iterator();
 		while (iter.hasNext())
 		{
-			System.out.print(GroupProject.tab);
+			System.out.print("     ");
 			(iter.next().getValue()).showAdjList();
 		}
 		// System.out.println();

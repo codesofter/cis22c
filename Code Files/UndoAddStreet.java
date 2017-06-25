@@ -19,4 +19,10 @@ public class UndoAddStreet<E> implements Undoable
 	{
 		this.targetGraph.remove(startLocation, endLocation);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "Undo of add street (add edge) is completed.";
+	}
 }

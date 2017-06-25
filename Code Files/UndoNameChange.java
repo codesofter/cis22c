@@ -18,4 +18,10 @@ public class UndoNameChange<E> implements Undoable
 	{		
 		this.targetGraph.undoSetName(this.oldName);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "Undo of name change is completed.";
+	}
 }

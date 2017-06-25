@@ -1,24 +1,24 @@
 Stelling
 19
-A 37.31562 -122.04399 McClellan-RoseBlossom Intersection
-B 37.31565 -122.04141 McClellan-SouthStelling Intersection
-C 37.31485 -122.04276 End Of RedFir Court
-D 37.31443 -122.04226 NobleFir-WhiteFir Intersection
-E 37.31435 -122.04151 SouthStelling-NobleFir Intersection
-F 37.31375 -122.04283 End Of WhiteFir Court
-G 37.31332 -122.04200 End Of Cory Court
-H 37.31332 -122.04151 SouthStelling-Cory Intersection
-I 37.31271 -122.04149 SouthStelling-Lilac Intersection
-J 37.31271 -122.04243 Lilac-Sage Intersection
-K 37.31211 -122.04278 End Of Sage Court
-L 37.31134 -122.04151 SouthStelling-Huntridge Intersection
-M 37.31114 -122.04302 RoseBlossom-Huntridge Intersection
-N 37.31266 -122.04381 RoseBlossom-Lilac Intersection
-O 37.31243 -122.04432 End Of Lilac Court
-P 37.31323 -122.04401 North-RoseBlossom-Lily Intersection
-Q 37.31427 -122.04493 Lily-LilyCourt Intersection
-R 37.31423 -122.04536 End Of Lily Court
-S 37.31479 -122.04401 South-RoseBlossom-Lily Intersection
+A McClellan-RoseBlossom Intersection
+B McClellan-SouthStelling Intersection
+C End Of RedFir Court
+D NobleFir-WhiteFir Intersection
+E SouthStelling-NobleFir Intersection
+F End Of WhiteFir Court
+G End Of Cory Court
+H SouthStelling-Cory Intersection
+I SouthStelling-Lilac Intersection
+J Lilac-Sage Intersection
+K End Of Sage Court
+L SouthStelling-Huntridge Intersection
+M RoseBlossom-Huntridge Intersection
+N RoseBlossom-Lilac Intersection
+O End Of Lilac Court
+P North-RoseBlossom-Lily Intersection
+Q Lily-LilyCourt Intersection
+R End Of Lily Court
+S South-RoseBlossom-Lily Intersection
 A B
 B E
 E H

@@ -1,6 +1,0 @@
-3
-AbornNieman Map.txt
-Cannongate Map.txt
-Sterling Map.txt
-BadMapFile.txt
-SomeFileName.txt

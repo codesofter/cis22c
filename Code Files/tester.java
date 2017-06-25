@@ -13,15 +13,15 @@ public class tester
 	public static void testBreadthFirstTraversal()
 	{
 		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");
-		LocationPoint startElement = graph.findLocationByName("A");
-		graph.breadthFirstTraversal(startElement, new LocationPointVisitor());
+		//LocationPoint startElement = graph.findLocationByName("A");
+		//graph.breadthFirstTraversal(startElement, new LocationPointVisitor());
 	}
 	
 	public static void testDepthFirstTraversal()
 	{
 		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");
-		LocationPoint startElement = graph.findLocationByName("A");
-		graph.depthFirstTraversal(startElement, new LocationPointVisitor());
+		//LocationPoint startElement = graph.findLocationByName("A");
+		//graph.depthFirstTraversal(startElement, new LocationPointVisitor());
 	}
 	
 	public static void testFileSaving()
@@ -34,8 +34,8 @@ public class tester
 	public static boolean testGetEulerCircuit()
 	{
 		NeighborhoodGraph<LocationPoint> graph = GraphIO.getNeighborhoodMap("AbornNieman Map.txt");	
-		LocationPoint startVertex = graph.findLocationByName("A");
-		graph.getEulerCircuit(startVertex);
+		//LocationPoint startVertex = graph.findLocationByName("A");
+		//graph.getEulerCircuit(startVertex);
 		return true;
 	}
 	

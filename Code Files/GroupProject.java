@@ -20,15 +20,6 @@ public class GroupProject
 	 */
 	public static void main(String[] args)
 	{	
-		boolean testing = false;		
-		if (testing)
-		{
-			System.out.println("Testing............");
-			//Call test function.
-			tester.testHasEulerCircuit();
-			return;
-		}
-		
 		MenuCode mainSelection = MenuCode.MAIN_MENU;
 		do
 		{			
@@ -102,7 +93,7 @@ public class GroupProject
 	 */
 	private static MenuCode selectNeighborhood()
 	{
-		String[][] mapList = GraphIO.getNeighborhoodList("MapList.txt");		
+		String[][] mapList = GraphIO.getNeighborhoodList();		
 		if (mapList == null) return MenuCode.MAIN_MENU;
 		
 		int userInput, numberOfRecords;
@@ -113,9 +104,10 @@ public class GroupProject
 		menu.append("\n\nSELECTING A NEIGHBORHOOD\n");
 		menu.append("------------------------\n");		
 		for (int i = 0; i < numberOfRecords; i++)
-			menu.append(String.format("%s%d. %s (%s)\n", tab, i + 1, mapList[i][0], mapList[i][1]));
+			menu.append(String.format("%s%d. %s (%s)\n", tab, i + 1, mapList[i][1], mapList[i][0]));
 		
-		menu.append(String.format("%s%d. Main Menu\n", tab, numberOfRecords + 1));
+		menu.append(String.format("%s%d. Select neighborhood data from file.\n", tab, numberOfRecords + 1));		
+		menu.append(String.format("%s%d. Main Menu\n", tab, numberOfRecords + 2));
 		menu.trimToSize();
 		
 		while (true)
@@ -125,7 +117,7 @@ public class GroupProject
 			
 			if ((userInput >= 1) && (userInput <= numberOfRecords))
 			{
-				mapFileName = mapList[userInput - 1][1];
+				mapFileName = mapList[userInput - 1][0];
 				graph = GraphIO.getNeighborhoodMap(mapFileName);
 				
 				if (graph == null)
@@ -135,9 +127,14 @@ public class GroupProject
 					graph.clearUndoStack();
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
 				}
-			} 			
+			}
+			
 			else if (userInput ==  numberOfRecords + 1)
+				return selectNeighborhoodDataFromFile();
+			
+			else if (userInput ==  numberOfRecords + 2)
 				return MenuCode.MAIN_MENU;
+			
 			else
 				System.out.println(tab + "Your selection is invalid.\n");
 		}
@@ -156,13 +153,14 @@ public class GroupProject
 		//Build the menu
 		menu.append(String.format("\n\nNEIGHBORHOOD MENU FOR %s\n", inputGraph.getNeighborhoodName().toUpperCase()));
 		menu.append("-------------------------------------\n");
-		menu.append(tab + "1.  Update Neighborhood Map\n");
-		menu.append(tab + "2.  Show Euler Circuit\n");
-		menu.append(tab + "3.  Show Breadth First Traversal\n");
-		menu.append(tab + "4.  Show Depth First Traversal\n");
-		menu.append(tab + "5.  Show Adjacency Table\n");
-		menu.append(tab + "6.  Return to previous Menu\n");
-		menu.append(tab + "7.  Main Menu\n");		
+		menu.append(tab + "1.  Show Neighborhood Data\n");		
+		menu.append(tab + "2.  Update/Save Neighborhood Map\n");
+		menu.append(tab + "3.  Show Adjacency Table\n");		
+		menu.append(tab + "4.  Show Breadth First Traversal\n");
+		menu.append(tab + "5.  Show Depth First Traversal\n");
+		menu.append(tab + "6.  Show Euler Circuit\n");
+		menu.append(tab + "7.  Return to previous Menu\n");
+		menu.append(tab + "8.  Main Menu\n");		
 		menu.trimToSize();
 		
 		while (true)
@@ -171,29 +169,33 @@ public class GroupProject
 			
 			switch (getIntegerInputFromUser())
 			{
-				case 1:			
-					return MenuCode.UPDATE_NEIGHBORHOOD;
-					
-				case 2:
-					showEulerCircuit(inputGraph);
+				case 1:
+					inputGraph.showNeighbohoodData(new LocationPointVisitor(), new EdgeVisitor());
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
 					
+				case 2:			
+					return MenuCode.UPDATE_NEIGHBORHOOD;
+					
 				case 3:
+					showAdjacencyTable(inputGraph);
+					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+								
+				case 4:
 					showBreadthFirstTraversal(inputGraph);
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
 					
-				case 4:
+				case 5:
 					showDepthFirstTraversal(inputGraph);
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
-					
-				case 5:
-					showAdjacencyTable(inputGraph);
+				
+				case 6:
+					showEulerCircuit(inputGraph);
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
 					
-				case 6:
+				case 7:
 					return MenuCode.SELECT_NEIGHBORHOOD;
 					
-				case 7:
+				case 8:
 					return MenuCode.MAIN_MENU;
 					
 				default:
@@ -214,14 +216,14 @@ public class GroupProject
 		StringBuilder menu = new StringBuilder(350);		
 		
 		//Build the menu
-		menu.append(String.format("\n\nUPDATE NEIGHHOOD MAP FOR %s\n", inputGraph.getNeighborhoodName().toUpperCase()));
-		menu.append("----------------------------------\n");
-		menu.append(tab + "1.  Change Neighborhood Name\n");
-		menu.append(tab + "2.  Report/Add New Street\n");
-		menu.append(tab + "3.  Report/Remove Closed Street\n");
-		menu.append(tab + "4.  Undo Last Update\n");
-		menu.append(tab + "5.  Save Neighborhood Map\n");
-		menu.append(tab + "6.  Show Adjacency Table\n");
+		menu.append(String.format("\n\nUPDATE/SAVE NEIGHHOOD MAP FOR %s\n", inputGraph.getNeighborhoodName().toUpperCase()));
+		menu.append("------------------------------------------\n");
+		menu.append(tab + "1.  Show Neighborhood Data\n");
+		menu.append(tab + "2.  Change Neighborhood Name (undoable)\n");
+		menu.append(tab + "3.  Report/Add New Street (undoable)\n");
+		menu.append(tab + "4.  Report/Remove Closed Street (undoable)\n");
+		menu.append(tab + "5.  Undo Last Update\n");		
+		menu.append(tab + "6.  Save Neighborhood Map\n");		
 		menu.append(tab + "7.  Return to previous Menu\n");
 		menu.append(tab + "8.  Main Menu\n");
 		menu.trimToSize();
@@ -232,29 +234,29 @@ public class GroupProject
 			
 			switch (getIntegerInputFromUser())
 			{
-				case 1:			
+				case 1:
+					inputGraph.showNeighbohoodData(new LocationPointVisitor(), new EdgeVisitor());
+					return MenuCode.UPDATE_NEIGHBORHOOD;
+					
+				case 2:			
 					changeNeighborhoodName(inputGraph);
 					return MenuCode.UPDATE_NEIGHBORHOOD;
 					
-				case 2:
+				case 3:
 					addStreet(inputGraph);
 					break;
 					
-				case 3:
+				case 4:
 					removeStreet(inputGraph);
 					break;
 					
-				case 4:
-					undoLastUpdate(inputGraph);
-					return MenuCode.UPDATE_NEIGHBORHOOD;
-					
 				case 5:
-					GraphIO.saveGraphToFile(inputGraph, mapFileName);
-					break;
-					
+					inputGraph.undoLastUpdate();
+					return MenuCode.UPDATE_NEIGHBORHOOD;					
+				
 				case 6:
-					showAdjacencyTable(inputGraph);
-					return MenuCode.UPDATE_NEIGHBORHOOD;
+					saveNeighborhoodMapToFile(inputGraph);
+					break;									
 					
 				case 7:
 					return MenuCode.NEIGHBORHOOD_FUNCTIONS;
@@ -269,7 +271,6 @@ public class GroupProject
 		}
 	}
 
-	
 	//Get an input from user. If it is a valid integer, return the integer value.
 	//If user did not enter a valid integer, return -1.
 	/*
@@ -295,6 +296,29 @@ public class GroupProject
 	/*
 	 * Coder: Bao Chau
 	 */
+	private static  MenuCode selectNeighborhoodDataFromFile()
+	{
+		System.out.print("\nPlease enter the input file name: ");
+		
+		mapFileName = "";
+		while (mapFileName.equals("")) 
+			mapFileName = scanner.nextLine().trim();
+
+		graph = GraphIO.getNeighborhoodMap(mapFileName);
+		
+		if (graph == null)
+			return MenuCode.SELECT_NEIGHBORHOOD;
+		else
+		{
+			graph.clearUndoStack();
+			return MenuCode.NEIGHBORHOOD_FUNCTIONS;
+		}
+	}
+
+	
+	/*
+	 * Coder: Bao Chau
+	 */
 	private static void showAdjacencyTable(NeighborhoodGraph<LocationPoint> inputGraph)
 	{		
 		System.out.println("\n" + tab + "Adjacency List Output:");
@@ -305,7 +329,6 @@ public class GroupProject
 	 * Coder: Bao Chau
 	 */
 	private static void showEulerCircuit(NeighborhoodGraph<LocationPoint> inputGraph) {
-		LocationPoint location;
 		boolean hasResult = false;
 		String response = "", fileName = "";
 		LocationPoint startLocation = AskUserForLocation("Please enter the start location: ");
@@ -375,10 +398,16 @@ public class GroupProject
 	 */
 	private static void showBreadthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
+		System.out.println("\n     Note: To enter location, use location name (for ex. A, B, C, etc.)");
+		System.out.println("     or location description (for ex. Aborn-Brigadoon Intersection).");
+		System.out.println("     Use menu option 1 to show list of locations in neighborhood.)");
+		
 		LocationPoint startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint != null)
 		{
-			System.out.print("\n" + tab + "Breadth First Traversal Output:\n" + tab);
+			System.out.println("\n" + tab + "Breadth First Traversal Output:");
+			System.out.println(tab + "   Name -  Location Descrition");
+			System.out.println(tab + "   ----    -------------------");
 			graph.breadthFirstTraversal(startPoint, new LocationPointVisitor());
 			System.out.println();	
 		}
@@ -389,10 +418,16 @@ public class GroupProject
 	 */
 	private static void showDepthFirstTraversal(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
+		System.out.println("\n     Note: To enter location, use location name (for ex. A, B, C, etc.)");
+		System.out.println("     or location description (for ex. Aborn-Brigadoon Intersection).");
+		System.out.println("     Use menu option 1 to show list of locations in neighborhood.)");
+		
 		LocationPoint startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint != null)
 		{
-			System.out.print("\n" + tab + "Depth First Traversal Output:\n" + tab);
+			System.out.println("\n" + tab + "Depth First Traversal Output:");
+			System.out.println(tab + "   Name -  Location Descrition");
+			System.out.println(tab + "   ----    -------------------");
 			graph.depthFirstTraversal(startPoint, new LocationPointVisitor());
 			System.out.println();	
 		}
@@ -405,15 +440,21 @@ public class GroupProject
 	{
 		LocationPoint startPoint, endLocation;
 		
+		System.out.println("\n     Note: To enter location, use location name (for ex. A, B, C, etc.)");
+		System.out.println("     or location description (for ex. Aborn-Brigadoon Intersection).");
+		System.out.println("     Use menu option 1 to show list of locations in neighborhood.)");
+		
 		startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint == null) return;
 		
 		endLocation = AskUserForLocation("Please enter the end location: ");
 		if (endLocation == null) return;
 		
-		inputGraph.addStreet(startPoint, endLocation);
+		if (inputGraph.addStreet(startPoint, endLocation))
+			System.out.print(tab + "Report/Add New Street is completed.");
+		else
+			System.out.print(tab + "Add Street failed. This street is already existed.");
 		
-		System.out.print(tab + "Report/Add New Street is completed.");	
 		return;
 	}
 	
@@ -424,15 +465,21 @@ public class GroupProject
 	{
 		LocationPoint startPoint, endLocation;
 		
+		System.out.println("\n     Note: To enter location, use location name (for ex. A, B, C, etc.)");
+		System.out.println("     or location description (for ex. Aborn-Brigadoon Intersection).");
+		System.out.println("     Use menu option 1 to show list of locations in neighborhood.)");
+		
 		startPoint = AskUserForLocation("Please enter the start location: ");
 		if (startPoint == null) return;
 		
 		endLocation = AskUserForLocation("Please enter the end location: ");
 		if (endLocation == null) return;
 		
-		inputGraph.removeStreet(startPoint, endLocation);
+		if (inputGraph.removeStreet(startPoint, endLocation))
+			System.out.print(tab + "Report/Remove Closed Street is completed.");	
+		else
+			System.out.print(tab + "Remove Street failed. This street is not existed.");
 		
-		System.out.print(tab + "Report/Remove Closed Street is completed.");		
 		return;
 	}
 	
@@ -442,13 +489,20 @@ public class GroupProject
 	private static LocationPoint AskUserForLocation(String prompt)
 	{
 		String input = "";
-		LocationPoint location;
+		LocationPoint location, tempLocation;
 		
 		System.out.print(prompt);
 		while (input.equals(""))
 			input = scanner.nextLine().trim();
 		
-		location = graph.findLocationByName(input);
+		tempLocation = new LocationPoint();
+		tempLocation.setName(input);
+		tempLocation.setDescription(input);
+		
+		location = graph.findLocationByNameOrDescription(tempLocation, new NameComparator());		
+		if (location != null) return location;
+		
+		location = graph.findLocationByNameOrDescription(tempLocation, new DescriptionComparator());
 		
 		if (location == null)
 			System.out.println(tab + "The location entry is invalid.");
@@ -468,16 +522,32 @@ public class GroupProject
 		
 		inputGraph.setNeighborhoodName(newName);									
 		System.out.println(tab + "New neighborhood name is: " + inputGraph.getNeighborhoodName());
-	}
+	}	
 	
 	/*
 	 * Coder: Bao Chau
 	 */
-	private static void undoLastUpdate(NeighborhoodGraph<LocationPoint> inputGraph)
+	private static void saveNeighborhoodMapToFile(NeighborhoodGraph<LocationPoint> inputGraph)
 	{
-		if (inputGraph.undoLastUpdate())
-			System.out.println(tab + "Undo completed.");
+		String response = "", fileName = "";
+		System.out.print("\nWould you like to save data in a new file?\n(Enter Y for yes, other for no): ");
+
+		while (response.equals(""))
+			response = scanner.nextLine().trim().toUpperCase();
+
+		if (response.equals("Y") || (response.equals("YES"))) 
+		{
+			System.out.print("Please enter to output file name: ");
+			
+			while (fileName.equals("")) 
+				fileName = scanner.nextLine().trim();
+			
+			if (GraphIO.saveGraphToFile(inputGraph, fileName))
+				mapFileName = fileName;
+		}
 		else
-			System.out.println(tab + "Undo failed. Undo stack is empty.");
+			GraphIO.saveGraphToFile(inputGraph, mapFileName);
 	}
+	
+
 }

@@ -3,7 +3,7 @@ import java.io.PrintWriter;
 /*
 * Coder: Bao Chau
 */
-public class SavingVisitor implements Visitor<LocationPoint>
+public class EdgeVisitor implements Visitor<LocationPoint>
 {
 	PrintWriter printWriter;
 
@@ -20,11 +20,12 @@ public class SavingVisitor implements Visitor<LocationPoint>
 	@Override
 	public void visit(LocationPoint obj)
 	{				
-		if (obj != null)
-		{
-			printWriter.println(obj.getName() + " " + obj.getLatitude() + " " + 
-						obj.getLongitude() + " " + obj.getDescription());
-		}
+		if (obj == null) 
+			throw new NullPointerException("Input paramter must not be null");  
+		
+		if (printWriter != null)
+			printWriter.print(obj.getName());
+		else
+			System.out.print(obj.getName());
 	}
-
 }
